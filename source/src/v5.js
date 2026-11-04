@@ -127,8 +127,8 @@
         '<div class="v5-shead"><span class="k">Мерч</span><div><h2>Корпоративный мерч coffeeIT</h2>' +
         '<p>Кружки, футболки, худи, кепки, шопперы, термокружки, блокноты и стикеры. Делаем корпоративные тиражи с логотипом заказчика.</p></div></div>' +
         '<div class="v5-merch-strip rv">' +
-          '<div class="v5-merch-photo" style="background-image:url({{photoWear}})"></div>' +
-          '<div class="v5-merch-photo" style="background-image:url({{photoDetail}})"></div>' +
+          '<div class="v5-merch-photo" style="background-image:url({{photoWearHome}})"></div>' +
+          '<div class="v5-merch-photo" style="background-image:url({{photoDetailHome}})"></div>' +
           '<div class="v5-merch-photo is-text"><b>23 позиции</b><span>кружки, худи, кепки, шопперы, стикеры · печать и вышивка свои</span></div>' +
         '</div>' +
         '{{shopPreview}}' +
@@ -215,7 +215,7 @@
       '<div class="v5-page-hero"><div class="wrap"><div class="crumb">Главная / Пространство</div>' +
       '<h1>Пространство и кофейня</h1><p>24 рабочих места, три переговорки, зал на 60 человек и витрина серверного оборудования. Бронирование — онлайн.</p></div></div>' +
       '<section class="v5-sec"><div class="wrap">' +
-        '<div class="v5-space-photo rv" style="background-image:url({{photoBar}});aspect-ratio:21/7;margin-bottom:22px"><span class="v5-space-cap">Бар coffeeIT: обжарка, эспрессо и рабочие места</span></div>' +
+        '<div class="v5-space-photo rv" style="background-image:url({{sceneArt}});aspect-ratio:21/7;margin-bottom:22px"><span class="v5-space-cap">Бар coffeeIT: обжарка, эспрессо и рабочие места</span></div>' +
         '<div class="v5-tabs" data-tabs><button class="is-on" data-tab="zones">Зоны и цены</button><button data-tab="menu">Меню</button><button data-tab="book">Бронирование</button></div>' +
         '<div class="v5-panel is-on" data-panel="zones"><div class="v5-zones">{{zonesHtml}}</div></div>' +
         '<div class="v5-panel" data-panel="menu">{{menuHtml}}</div>' +
@@ -287,7 +287,7 @@
         '</div>' +
         '<div class="v5-shopbar"><span>В наличии · доставка по Москве от 2 дней · самовывоз у бара</span>' +
         '<button class="btn btn-ghost btn-sm" data-cart-open>Открыть корзину</button></div>' +
-        '{{shopHtml}}' +
+        '<p class="v5-media-disclaimer">Изображения в каталоге — иллюстрации, внешний вид товаров может отличаться.</p>' + '{{shopHtml}}' +
       '</div></section>' +
     '</section>' +
 

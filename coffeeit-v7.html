@@ -546,6 +546,22 @@ body[data-variant="v7"] .v6-stat b{display:block;font-family:"Arial Black",sans-
 body[data-variant="v7"] .v6-stat span{display:block;font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
 @media (max-width:760px){body[data-variant="v7"] .v6-stats{grid-template-columns:1fr 1fr}body[data-variant="v7"] .v6-stat:nth-child(2){border-right:0}}
 
+/* Общие исправления для узких экранов и фотографий. */
+[style*="background-image"], [data-raster] { background-repeat: no-repeat; background-position: center; background-size: cover; }
+@media (max-width: 760px) {
+  .page, .wrap, .page :is(section, article, form) { min-width: 0; }
+  .page :is(h1, h2, h3, h4, p, a, li, label) { overflow-wrap: anywhere; }
+  .page :is(h1, h2, h3, h4) { hyphens: auto; }
+  .page :is(input, textarea, select) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .page table { display: block; max-width: 100%; overflow-x: auto; }
+  .mobile-menu { overflow-y: auto; overscroll-behavior: contain; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .cart-drawer { max-width: 100%; }
+  .v7-hero h1 { font-size: clamp(32px, 10vw, 58px); }
+}
+@media (max-width: 380px) {
+  .product-grid, .v1-cases, .v1-vendors, .v5-vendors, .v5-zones { grid-template-columns: minmax(0, 1fr); }
+}
+
 </style>
 </head>
 <body data-variant="v7">
@@ -806,7 +822,7 @@ window.CI_DATA = {
               '<div class="v6-stat"><b data-count="2400" data-suffix="+">2400+</b><span>гостей в месяц</span></div>' +
             '</div>' +
           '</div>' +
-          '<div class="v7-hero-media" style="background-image:url({{ph:ag_hero1}})">' +
+          '<div class="v7-hero-media" style="background-image:url({{ph:ag_hero2}})">' +
             '<span class="v7-scroll">scroll<br>01</span>' +
             '<div class="v7-media-cap"><span><b>Бар coffeeIT</b><br>обжарка на месте</span><span>«Флакон», вход 3</span></div>' +
           '</div>' +
@@ -1396,7 +1412,19 @@ window.CI_DATA = {
 
   /* ---------- cart state ---------- */
   var cart = [];
-  try { cart = JSON.parse(localStorage.getItem('ci_cart_' + CFG.id) || '[]'); } catch (e) { cart = []; }
+  try {
+    var savedCart = JSON.parse(localStorage.getItem('ci_cart_' + CFG.id) || '[]');
+    if (Array.isArray(savedCart)) {
+      cart = savedCart.reduce(function (items, line) {
+        if (!line || !Number.isSafeInteger(line.qty) || line.qty < 1) return items;
+        var product = products.filter(function (p) { return p.id === line.id; })[0];
+        if (product && !items.some(function (item) { return item.id === product.id; })) {
+          items.push({ id: product.id, title: product.title, price: product.price, qty: line.qty, icon: product.icon });
+        }
+        return items;
+      }, []);
+    }
+  } catch (e) { cart = []; }
   function count() { return cart.reduce(function (a, b) { return a + b.qty; }, 0); }
   function total() { return cart.reduce(function (a, b) { return a + b.qty * b.price; }, 0); }
   function saveCart() {
@@ -1476,20 +1504,20 @@ window.CI_DATA = {
     }
 
     /* filters */
-    if ((t = e.target.closest('[data-tag]'))) {
+    if ((t = e.target.closest('[data-cases-filter] [data-tag]'))) {
       var wrap = t.closest('[data-cases-filter]');
       $$('.chip', wrap).forEach(function (c) { c.classList.toggle('is-on', c === t); });
       var tag = t.getAttribute('data-tag');
-      $$('.case').forEach(function (c) {
+      $$('.case', wrap.closest('.page') || document).forEach(function (c) {
         c.style.display = (tag === 'Все' || c.getAttribute('data-tag') === tag) ? '' : 'none';
       });
       return;
     }
-    if ((t = e.target.closest('[data-cat]'))) {
+    if ((t = e.target.closest('[data-shop-filter] [data-cat]'))) {
       var w2 = t.closest('[data-shop-filter]');
       $$('.chip', w2).forEach(function (c) { c.classList.toggle('is-on', c === t); });
       var cat = t.getAttribute('data-cat');
-      $$('.product').forEach(function (p) {
+      $$('.product', w2.closest('.page') || document).forEach(function (p) {
         p.style.display = (cat === 'all' || p.getAttribute('data-cat') === cat) ? '' : 'none';
       });
       return;
@@ -1681,7 +1709,9 @@ window.CI_DATA = {
   }
 
   /* параллакс для фото */
+  var parallaxCleanup;
   function parallax() {
+    if (parallaxCleanup) parallaxCleanup();
     var items = $$('[data-parallax]');
     if (!items.length) return;
     function onScroll() {
@@ -1695,6 +1725,10 @@ window.CI_DATA = {
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    parallaxCleanup = function () {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
     onScroll();
   }
 
