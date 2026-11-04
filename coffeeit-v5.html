@@ -711,6 +711,24 @@ body.v5-winter .v5-festive-seal { display:flex; position:absolute; right:-16px; 
 
 .v5-media-disclaimer { color:var(--muted); font-size:12px; line-height:1.5; margin:0 0 16px; }
 
+/* Переключатель дня и ночи в шапке */
+.v5-day-night { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:38px; padding:0 12px; border:1px solid var(--line); border-radius:9px; color:var(--fg); background:var(--card); font-size:12px; font-weight:600; white-space:nowrap; }
+.v5-day-night:hover { border-color:var(--accent); }
+.v5-day-night-icon { font-size:19px; line-height:1; color:var(--accent); }
+body.v5-night { color-scheme:dark; }
+body.v5-night .v5-sec[style*="background:#fff"] { background:var(--card) !important; }
+body.v5-night :is(.v5-srow:hover,.v5-map,.sp-stats,.sp-tier,.cart-drawer,.cart-thumb,.v5-festive-note) { background-color:var(--card); color:var(--fg); }
+body.v5-night :is(.v5-quick,.v5-cta,.v5-logo .mark,.v5-cart .badge,.sp-pop,.chip.is-on) { background:var(--btn-bg); color:#fff; }
+body.v5-night .v5-cta .btn { background:#fff; color:var(--btn-bg); }
+body.v5-night .v5-hero h1 em { color:var(--accent); }
+body.v5-night .v5-theme-popover, body.v5-night .v5-day-night { box-shadow:none; }
+body.v5-night .v5-form :is(input,textarea,select) { background:var(--input-bg); color:var(--fg); }
+body.v5-night .v5-festive-note .v5-festive-icon { background:#294739; color:#b9e7c8; }
+body.v5-night .sp-metal.m0 { color:#efbf8b; }
+body.v5-night .sp-metal.m1 { color:#c6ceda; }
+body.v5-night .sp-metal.m2 { color:#f2d17e; }
+@media (max-width:760px) { .v5-day-night { padding:0; width:38px; flex:none; } .v5-day-night-label { display:none; } .v5-head .wrap { gap:8px; } .v5-head-r { gap:6px; } }
+
 </style>
 </head>
 <body data-variant="v5">
@@ -922,6 +940,7 @@ window.CI_DATA = {
     '<nav class="v5-nav">' + links() + '</nav>' +
     '<div class="v5-head-r"><span class="v5-tel">+7 495 000-00-00</span>' +
     '<button class="v5-cart" data-cart-open aria-label="Корзина">{{ic:cart}}<span class="badge" id="cartBadge">0</span></button>' +
+    '<button type="button" class="v5-day-night" aria-label="Включить ночной режим" aria-pressed="false"><span class="v5-day-night-icon" aria-hidden="true">☾</span><span class="v5-day-night-label">Ночь</span></button>' +
     '<a class="btn" href="#contacts" data-cta="project">Оставить заявку</a>' +
     '<button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><i></i><i></i><i></i></button>' +
     '</div></div></header><nav class="mobile-menu">' + links() + '</nav>';
@@ -1996,12 +2015,16 @@ window.CI_DATA = {
   try { saved = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) {}
   var selected = Object.prototype.hasOwnProperty.call(palettes, saved.palette) ? saved.palette : 'blue';
   var winter = typeof saved.winter === 'boolean' ? saved.winter : true;
+  var night = saved.night === true;
+  var nightColors = {blue:'#b5cbff',forest:'#9cdbba',coffee:'#f0c09a',berry:'#f1b6c8',violet:'#d0bcff'};
   function boot() {
     var head = document.querySelector('.v5-head');
     if (!head) return;
     var panel = document.createElement('section'); panel.className = 'v5-appearance'; panel.setAttribute('aria-label','Оформление сайта');
     panel.innerHTML = '<div class="wrap v5-appearance-wrap"><div class="v5-appearance-intro"><span class="v5-appearance-spark" aria-hidden="true">✳</span><span><b>Сайт под настроение</b><small>Выберите свою атмосферу</small></span></div><details class="v5-theme-menu"><summary><span class="v5-current-swatch" aria-hidden="true"></span><span class="v5-current-label">Классика</span><span class="v5-chevron" aria-hidden="true">⌄</span></summary><div class="v5-theme-popover"><div class="v5-popover-heading"><span>ВАША ПАЛИТРА</span><b>Какой будет ваш coffeeIT?</b><small>Цвет меняется на всех страницах</small></div><div class="v5-palettes" role="group" aria-label="Цветовая схема"></div><div class="v5-season-control"><div><b>Новогоднее настроение</b><small>Праздничный дизайн и снег</small></div><button type="button" class="v5-winter-toggle" aria-label="Новогоднее оформление"><span class="v5-toggle-track" aria-hidden="true"><span></span></span><span class="v5-toggle-text"></span></button></div><p class="v5-appearance-note">✦ Выбор сохранится на этом устройстве</p></div></details></div>';
     head.insertAdjacentElement('afterend', panel);
+    var dayNight = head.querySelector('.v5-day-night');
+    if (dayNight) dayNight.addEventListener('click', function () { night = !night; apply(); save(); });
     var group = panel.querySelector('.v5-palettes');
     Object.keys(palettes).forEach(function (id) {
       var b = document.createElement('button'); b.type = 'button'; b.dataset.palette = id;
@@ -2027,6 +2050,19 @@ window.CI_DATA = {
     function apply() {
       var p = palettes[selected], style = document.body.style;
       var vars = {'--bg':p.bg,'--card':p.card,'--fg':p.fg,'--muted':p.muted,'--line':p.line,'--accent':p.color,'--btn-bg':p.color,'--btn-fg':'#ffffff','--accent-fg':'#ffffff','--tile':p.tile,'--tile-fg':p.color,'--input-bg':p.card,'--tag-bg':p.tile,'--tag-fg':p.fg};
+      if (night) {
+        vars['--bg'] = '#101722'; vars['--card'] = '#1c2634'; vars['--fg'] = '#f1f4f8';
+        vars['--muted'] = '#b8c5d4'; vars['--line'] = '#435165'; vars['--accent'] = nightColors[selected];
+        vars['--tile'] = '#303e50'; vars['--tile-fg'] = nightColors[selected]; vars['--input-bg'] = '#222f3e';
+        vars['--tag-bg'] = '#303e50'; vars['--tag-fg'] = '#f1f4f8';
+      }
+      document.body.classList.toggle('v5-night', night);
+      if (dayNight) {
+        dayNight.setAttribute('aria-pressed', String(night));
+        dayNight.setAttribute('aria-label', night ? 'Включить дневной режим' : 'Включить ночной режим');
+        dayNight.querySelector('.v5-day-night-icon').textContent = night ? '☀' : '☾';
+        dayNight.querySelector('.v5-day-night-label').textContent = night ? 'День' : 'Ночь';
+      }
       Object.keys(vars).forEach(function (name) { style.setProperty(name, vars[name]); });
       group.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.palette === selected)); });
       toggle.setAttribute('aria-pressed', String(winter));
@@ -2036,7 +2072,7 @@ window.CI_DATA = {
       document.body.classList.toggle('v5-winter', winter);
       photos.forEach(function (el, index) { var image = el.classList.contains('v5-hero-photo') ? window.CI_WINTER_PHOTOS.hero : (index === 1 ? window.CI_WINTER_PHOTOS.bar : null); el.style.backgroundImage = winter && image ? 'url("' + image + '")' : el.dataset.originalBackground; });
     }
-    function save() { try { localStorage.setItem(key, JSON.stringify({palette:selected,winter:winter})); } catch (e) {} }
+    function save() { try { localStorage.setItem(key, JSON.stringify({palette:selected,winter:winter,night:night})); } catch (e) {} }
     apply();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
