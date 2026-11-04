@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>coffeeIT — 5 вариантов сайта</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f2f1ee;color:#14120f;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(28px,5vw,64px) 20px}
+  header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px}
+  h1{font-size:clamp(28px,4.6vw,52px);line-height:1;letter-spacing:-.03em;margin:0 0 10px}
+  .lead{max-width:60ch;font-size:15px;line-height:1.6;color:#5c574e;margin:0}
+  .tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8a8377;display:block;margin-bottom:12px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .card{background:#fff;border:1px solid #dedad2;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.18s}
+  .card:hover{box-shadow:0 18px 44px rgba(20,18,15,.12);transform:translateY(-3px)}
+  .prev{aspect-ratio:16/9;position:relative;overflow:hidden;border-bottom:1px solid #dedad2}
+  .body{padding:18px 20px 22px;display:grid;gap:8px}
+  .body h2{font-size:18px;margin:0;letter-spacing:-.02em}
+  .body p{font-size:13.5px;line-height:1.55;color:#5c574e;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .meta span{font-size:11.5px;border:1px solid #dedad2;border-radius:999px;padding:3px 9px;color:#6b655a}
+  .cta{margin-top:10px;font-size:13.5px;font-weight:600}
+  /* мини-превью */
+  .mock{position:absolute;inset:0;display:flex;flex-direction:column}
+  .mock .bar{height:18%;display:flex;align-items:center;gap:5px;padding:0 10px}
+  .mock .bar i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.35;display:block}
+  .mock .bar u{width:26px;height:5px;border-radius:2px;background:currentColor;opacity:.28;display:block;margin-left:auto}
+  .mock .stage{flex:1;display:flex;gap:8px;padding:10px 12px}
+  .mock .stage>div{flex:1;border-radius:3px;min-width:0}
+  .mock .h1,.mock .h2{flex:none!important;border-radius:3px!important}
+  /* v1 */
+  .m1{background:#f4efe4;color:#16130f}
+  .m1 .bar{border-bottom:1px solid rgba(22,19,15,.18)}
+  .m1 .h1{background:#16130f;height:9px;width:64%;border-radius:0}
+  .m1 .h2{background:#16130f;height:9px;width:44%;margin-top:6px}
+  .m1 .ph{background:linear-gradient(150deg,#2c1d13,#8a5a34 60%,#c98a53);border-radius:0!important}
+  .col{display:flex;flex-direction:column;justify-content:center}
+  /* v2 */
+  .m2{background:#0b0d0c;color:#c6f24e}
+  .m2 .bar{border-bottom:1px solid rgba(255,255,255,.14)}
+  .m2 .h1{background:#eef3ee;height:10px;width:70%;border-radius:2px}
+  .m2 .h2{background:#c6f24e;height:10px;width:36%;margin-top:6px;border-radius:2px}
+  .m2 .ph{background:linear-gradient(150deg,#12241a,#2f6b4f 70%,#c6f24e);border-radius:6px!important}
+  /* v3 */
+  .m3{background:#f3ece0;color:#1b1410}
+  .m3 .bar{border-bottom:3px solid #1b1410}
+  .m3 .h1{background:#1b1410;height:12px;width:74%}
+  .m3 .h2{background:#ff7a29;border:2px solid #1b1410;height:12px;width:40%;margin-top:6px}
+  .m3 .ph{background:linear-gradient(140deg,#ff7a29,#ffd166 60%,#a8402a);border:2px solid #1b1410}
+  /* v4 */
+  .m4{background:#0a0c0a;color:#7ae78f}
+  .m4 .bar{border-bottom:1px solid rgba(233,236,233,.18);font-size:8px}
+  .m4 .h1{background:#e9ece9;height:7px;width:76%;border-radius:0}
+  .m4 .h2{background:#7ae78f;height:7px;width:52%;margin-top:5px}
+  .m4 .ph{background:repeating-linear-gradient(0deg,rgba(122,231,143,.22) 0 1px,transparent 1px 7px),repeating-linear-gradient(90deg,rgba(122,231,143,.22) 0 1px,transparent 1px 7px),#080b09;border:1px solid rgba(122,231,143,.35)}
+  /* v5 */
+  .m5{background:#f6f7f8;color:#101828}
+  .m5 .bar{background:#fff;border-bottom:1px solid #dde2e9}
+  .m5 .h1{background:#101828;height:9px;width:66%}
+  .m5 .h2{background:#1f4fd8;height:9px;width:46%;margin-top:6px}
+  .m5 .ph{background:linear-gradient(140deg,#1f4fd8,#8fa9e0 70%,#e9edf3);border-radius:6px!important}
+  .m5 .bars{background:#1f4fd8;height:16px;border-radius:0!important;margin:8px 12px 0}
+  .note{background:#fff;border:1px solid #dedad2;border-radius:12px;padding:18px 20px;margin-top:26px;font-size:13.5px;line-height:1.6;color:#5c574e}
+  .note b{color:#14120f}
+  code{background:#f2f1ee;border:1px solid #e3dfd7;border-radius:4px;padding:1px 5px;font-size:12.5px}
+  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="tag">coffeeIT · кофейня × пространство × IT-интегратор</span>
+      <h1>Семь сайтов — один бренд</h1>
+      <p class="lead">Каждый файл автономный: внутри весь HTML, CSS, JavaScript, логотип, иллюстрации, фотографии и шрифты. Два новых варианта (6 и 7) — в стиле премиальных диджитал-агентств: такой сайт хочется «купить». Откройте вариант в браузере или загрузите на хостинг как <code>index.html</code>. Навигация, кейсы, фильтры, корзина и формы работают в каждом.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <a class="card" href="coffeeit-v6.html">
+      <div class="prev" style="background:#faf9f7">
+        <div class="mock" style="background:#faf9f7;color:#111110">
+          <div class="bar" style="border-bottom:1px solid rgba(17,17,16,.14)"><i></i><i></i><i></i><u></u></div>
+          <div class="stage" style="padding:14px 16px;gap:12px">
+            <div class="col" style="flex:1.2"><div style="background:#111110;height:14px;width:78%;border-radius:2px"></div>
+              <div style="background:#111110;height:14px;width:52%;border-radius:2px;margin-top:6px"></div>
+              <div style="background:#0b5d3b;height:14px;width:64%;border-radius:2px;margin-top:6px"></div>
+              <div style="background:#e9e2d6;height:6px;width:88%;border-radius:2px;margin-top:12px"></div></div>
+            <div style="flex:1;background:linear-gradient(160deg,#2b1d14,#8a6a4b 60%,#c9a37a);border-radius:6px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>6. «Agency Editorial» — светлое премиум-агентство</h2>
+        <p>Почти белый фон, огромные заголовки с антиквой в акценте, глубокий зелёный, тонкие линии, воздух. Услуги — крупными строками, проекты — фото-карточками с раскрытием при наведении, командный блок и живая панель кофейни.</p>
+        <div class="meta"><span>светлый</span><span>премиум</span><span>бенто-фото</span><span>8 разделов</span></div>
+        <div class="cta">Открыть вариант 6 →</div>
+      </div>
+    </a>
+
+    <a class="card" href="coffeeit-v7.html">
+      <div class="prev" style="background:#09090a">
+        <div class="mock" style="background:#09090a;color:#f4f0ea">
+          <div class="bar" style="border-bottom:1px solid rgba(244,240,234,.16)"><i></i><i></i><i></i><u></u></div>
+          <div class="stage" style="padding:14px 16px;gap:12px">
+            <div class="col" style="flex:1.2">
+              <div style="background:#f4f0ea;height:16px;width:82%;border-radius:1px"></div>
+              <div style="border:1.5px solid rgba(244,240,234,.4);height:16px;width:60%;margin-top:6px"></div>
+              <div style="background:#c9a37a;height:8px;width:40%;margin-top:8px"></div>
+              <div style="background:rgba(244,240,234,.14);height:6px;width:88%;margin-top:12px"></div>
+            </div>
+            <div style="flex:1;background:linear-gradient(160deg,#1a1208,#6b4a2a 60%,#c9a37a);border:1px solid rgba(244,240,234,.16)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>7. «Noir Premium» — тёмный агентский брутализм</h2>
+        <p>Почти чёрный фон, кремовая типографика, гигантские заголовки в две строки (одна — контурная), медный акцент. Проекты — горизонтальными строками с фото, спонсорство — карточками-таблетками и тарифной сеткой.</p>
+        <div class="meta"><span>тёмный</span><span>агентский</span><span>крупная типографика</span><span>8 разделов</span></div>
+        <div class="cta">Открыть вариант 7 →</div>
+      </div>
+    </a>
+
+    <a class="card" href="coffeeit-v1.html">
+      <div class="prev">
+        <div class="mock m1">
+          <div class="bar"><i></i><i></i><i></i><u></u></div>
+          <div class="stage">
+            <div class="col"><div class="h1"></div><div class="h2"></div></div>
+            <div class="ph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>1. «Код и зерно» — редакционный премиум</h2>
+        <p>Кремовый фон, крупная антиква, тёмно-зелёный акцент, тонкие линии и «журнальная» сетка. Услуги — строками-нумерацией, кейсы — карточками с фото. Впечатление дорогой студии, а не рекламного лендинга.</p>
+        <div class="meta"><span>светлый</span><span>антиква</span><span>сдержанно</span><span>для крупных клиентов</span></div>
+        <div class="cta">Открыть вариант 1 →</div>
+      </div>
+    </a>
+
+    <a class="card" href="coffeeit-v2.html">
+      <div class="prev">
+        <div class="mock m2">
+          <div class="bar"><i></i><i></i><i></i><u></u></div>
+          <div class="stage">
+            <div class="col"><div class="h1"></div><div class="h2"></div></div>
+            <div class="ph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>2. «Смена» — хай-тек графит и лайм</h2>
+        <p>Тёмный интерфейс, стеклянные панели, кислотный лайм, горизонтальная карусель услуг, плитки быстрых переходов и шаги «от эспрессо до продакшена». Самый технологичный и «продуктовый» из пяти.</p>
+        <div class="meta"><span>тёмный</span><span>хай-тек</span><span>карусель</span><span>для digital-аудитории</span></div>
+        <div class="cta">Открыть вариант 2 →</div>
+      </div>
+    </a>
+
+    <a class="card" href="coffeeit-v3.html">
+      <div class="prev">
+        <div class="mock m3">
+          <div class="bar"><i></i><i></i><i></i><u></u></div>
+          <div class="stage">
+            <div class="col"><div class="h1"></div><div class="h2"></div></div>
+            <div class="ph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>3. «Coffee first» — нео-брутализм</h2>
+        <p>Молочный фон, толстые контуры, жёсткие тени, оранжевый акцент, стикеры и лозунг «Coffee first, code second». Воздушные карточки-постеры, крупные цифры шагов, много характера и юмора.</p>
+        <div class="meta"><span>светлый</span><span>брутализм</span><span>молодёжный</span><span>максимум эмоций</span></div>
+        <div class="cta">Открыть вариант 3 →</div>
+      </div>
+    </a>
+
+    <a class="card" href="coffeeit-v4.html">
+      <div class="prev">
+        <div class="mock m4">
+          <div class="bar"><i></i><i></i><i></i><u></u></div>
+          <div class="stage">
+            <div class="col"><div class="h1"></div><div class="h2"></div></div>
+            <div class="ph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>4. «Terminal» — моно и YAML</h2>
+        <p>Эстетика терминала: моно-шрифт, зелёный prompt, окно консоли на главной, YAML-документы вместо блоков, вкладки-сервисы и таблица вендоров как база данных. Для инженерной аудитории и тех, кто ценит иронию в деталях.</p>
+        <div class="meta"><span>тёмный</span><span>моно-шрифт</span><span>терминал</span><span>для разработчиков</span></div>
+        <div class="cta">Открыть вариант 4 →</div>
+      </div>
+    </a>
+
+    <a class="card" href="coffeeit-v5.html">
+      <div class="prev">
+        <div class="mock m5">
+          <div class="bar"><i></i><i></i><i></i><u></u></div>
+          <div class="bars"></div>
+          <div class="stage">
+            <div class="col"><div class="h1"></div><div class="h2"></div></div>
+            <div class="ph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <h2>5. «Build &amp; Brew» — корпоративный кейс-сайт</h2>
+        <p>Светлый серо-стальной стиль, синий акцент, двухколоночная сетка, услуги строками-таблицей с ценами, полоса метрик, вкладки «зоны / меню / бронирование», FAQ и форма диагностики. Выглядит как сайт компании, у которой можно закупать оборудование.</p>
+        <div class="meta"><span>светлый</span><span>корпоративный</span><span>таблицы и вкладки</span><span>для B2B-закупок</span></div>
+        <div class="cta">Открыть вариант 5 →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="note">
+    <b>Что общего у всех вариантов:</b> 8 «страниц» внутри одного файла (Главная, Услуги, Кейсы/Проекты, Вендоры/Партнёры, Пространство, Спонсорство, Мерч, Контакты), логотип-кружка, магазин мерча с фильтрами и корзиной (сохраняется после перезагрузки), оформление заказа и заявок через почтовое приложение, бронирование места, кейсы с раскрывающимися подробностями и адаптивная вёрстка под телефон.<br><br>
+    <b>Что менять перед публикацией:</b> контакты, адрес, цены, кейсы и товары. Для каждого варианта это один блок в начале файла — инструкция в <code>README.md</code>. Сборка и установка зависимостей не нужны.
+  </div>
+</div>
+</body>
+</html>
