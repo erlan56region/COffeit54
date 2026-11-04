@@ -103,3 +103,11 @@ body.v5-night .sp-metal.m0 { color:#efbf8b; }
 body.v5-night .sp-metal.m1 { color:#c6ceda; }
 body.v5-night .sp-metal.m2 { color:#f2d17e; }
 @media (max-width:760px) { .v5-day-night { padding:0; width:38px; flex:none; } .v5-day-night-label { display:none; } .v5-head .wrap { gap:8px; } .v5-head-r { gap:6px; } }
+
+/* Режим смены палитры */
+.v5-style-switch { display:grid; grid-template-columns:1fr 1fr; padding:4px; margin-top:16px; gap:4px; background:var(--bg); border:1px solid var(--line); border-radius:12px; }
+.v5-style-switch button { min-height:38px; padding:8px 6px; border:0; border-radius:8px; background:transparent; color:var(--muted); font-size:12px; font-weight:600; }
+.v5-style-switch button[aria-pressed="true"] { background:var(--card); color:var(--fg); box-shadow:0 2px 8px rgba(0,0,0,.1); }
+.v5-style-switch button[data-style="auto"] span { color:var(--accent); }
+.v5-auto-description { font-size:11px; color:var(--muted); margin:10px 0 0; line-height:1.4; }
+.v5-style-switch + .v5-auto-description + .v5-palettes { margin-top:12px; }
