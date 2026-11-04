@@ -5,6 +5,7 @@ import pathlib, re, sys, json, base64
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
 OUT = ROOT / "coffeeit"
+VERSION = "1.0.0"
 
 TITLES = {
     "v1": ("coffeeIT — Код и зерно", "Одна команда: разработка, серверы и кофе. Редакционный премиум-стиль."),
@@ -53,7 +54,7 @@ def build(vid):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
+<title>ver. {VERSION} · {title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#16130f">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%2316130f'/%3E%3Cpath d='M14 18h16v10a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18Z' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3Cpath d='M30 21h3a3.5 3.5 0 0 1 0 7h-3' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3C/svg%3E">
