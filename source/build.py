@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Собирает автономные HTML-файлы coffeeIT: base.css + data.js + engine.js + vN.css + vN.js."""
-import pathlib, re, sys, json
+import pathlib, re, sys, json, base64
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
@@ -23,7 +23,16 @@ def build(vid):
     engine = (SRC / "engine.js").read_text(encoding="utf-8")
     skin_css = (SRC / f"{vid}.css").read_text(encoding="utf-8")
     skin_js = (SRC / f"{vid}.js").read_text(encoding="utf-8")
-    photos = (ROOT / "assets" / "photos.json").read_text(encoding="utf-8") if (ROOT / "assets" / "photos.json").exists() else "{}"
+    photos = (ROOT / "photos.json").read_text(encoding="utf-8")
+    photos = json.loads(photos)
+    hero_files = {"v1": "cafe-one.jpg", "v2": "cafe-two.jpg", "v3": "cafe-three.jpg"}
+    if vid in hero_files:
+        image = (ROOT / "images" / hero_files[vid]).read_bytes()
+        photos["hero"] = "data:image/jpeg;base64," + base64.b64encode(image).decode("ascii")
+    elif vid == "v4":
+        photos["hero"] = photos["coffee_bar"]
+    photos = json.dumps(photos, ensure_ascii=False)
+    mobile_css = (SRC / "mobile.css").read_text(encoding="utf-8")
     title, desc = TITLES[vid]
 
     html = f"""<!DOCTYPE html>
@@ -38,6 +47,7 @@ def build(vid):
 <style>
 {base}
 {skin_css}
+{mobile_css}
 </style>
 </head>
 <body data-variant="{vid}">
@@ -64,7 +74,9 @@ window.CI_PHOTOS = {photos};
 
 
 if __name__ == "__main__":
-    targets = sys.argv[1:] or list(TITLES)
+    targets = sys.argv[1:] or ["v1", "v2", "v3", "v4", "v5"]
     for v in targets:
+        if v not in TITLES or not (SRC / f"{v}.css").exists() or not (SRC / f"{v}.js").exists():
+            sys.exit(f"Нет исходников для варианта {v}. Доступны: v1–v5.")
         p, size = build(v)
         print(f"{p}  {size/1024:.0f} KB")

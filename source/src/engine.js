@@ -345,7 +345,19 @@
 
   /* ---------- cart state ---------- */
   var cart = [];
-  try { cart = JSON.parse(localStorage.getItem('ci_cart_' + CFG.id) || '[]'); } catch (e) { cart = []; }
+  try {
+    var savedCart = JSON.parse(localStorage.getItem('ci_cart_' + CFG.id) || '[]');
+    if (Array.isArray(savedCart)) {
+      cart = savedCart.reduce(function (items, line) {
+        if (!line || !Number.isSafeInteger(line.qty) || line.qty < 1) return items;
+        var product = products.filter(function (p) { return p.id === line.id; })[0];
+        if (product && !items.some(function (item) { return item.id === product.id; })) {
+          items.push({ id: product.id, title: product.title, price: product.price, qty: line.qty, icon: product.icon });
+        }
+        return items;
+      }, []);
+    }
+  } catch (e) { cart = []; }
   function count() { return cart.reduce(function (a, b) { return a + b.qty; }, 0); }
   function total() { return cart.reduce(function (a, b) { return a + b.qty * b.price; }, 0); }
   function saveCart() {
@@ -425,20 +437,20 @@
     }
 
     /* filters */
-    if ((t = e.target.closest('[data-tag]'))) {
+    if ((t = e.target.closest('[data-cases-filter] [data-tag]'))) {
       var wrap = t.closest('[data-cases-filter]');
       $$('.chip', wrap).forEach(function (c) { c.classList.toggle('is-on', c === t); });
       var tag = t.getAttribute('data-tag');
-      $$('.case').forEach(function (c) {
+      $$('.case', wrap.closest('.page') || document).forEach(function (c) {
         c.style.display = (tag === 'Все' || c.getAttribute('data-tag') === tag) ? '' : 'none';
       });
       return;
     }
-    if ((t = e.target.closest('[data-cat]'))) {
+    if ((t = e.target.closest('[data-shop-filter] [data-cat]'))) {
       var w2 = t.closest('[data-shop-filter]');
       $$('.chip', w2).forEach(function (c) { c.classList.toggle('is-on', c === t); });
       var cat = t.getAttribute('data-cat');
-      $$('.product').forEach(function (p) {
+      $$('.product', w2.closest('.page') || document).forEach(function (p) {
         p.style.display = (cat === 'all' || p.getAttribute('data-cat') === cat) ? '' : 'none';
       });
       return;
@@ -630,7 +642,9 @@
   }
 
   /* параллакс для фото */
+  var parallaxCleanup;
   function parallax() {
+    if (parallaxCleanup) parallaxCleanup();
     var items = $$('[data-parallax]');
     if (!items.length) return;
     function onScroll() {
@@ -644,6 +658,10 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    parallaxCleanup = function () {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
     onScroll();
   }
 

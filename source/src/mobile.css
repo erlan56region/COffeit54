@@ -1,0 +1,15 @@
+/* Общие исправления для узких экранов и фотографий. */
+[style*="background-image"], [data-raster] { background-repeat: no-repeat; background-position: center; background-size: cover; }
+@media (max-width: 760px) {
+  .page, .wrap, .page :is(section, article, form) { min-width: 0; }
+  .page :is(h1, h2, h3, h4, p, a, li, label) { overflow-wrap: anywhere; }
+  .page :is(h1, h2, h3, h4) { hyphens: auto; }
+  .page :is(input, textarea, select) { max-width: 100%; min-width: 0; font-size: 16px; }
+  .page table { display: block; max-width: 100%; overflow-x: auto; }
+  .mobile-menu { overflow-y: auto; overscroll-behavior: contain; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .cart-drawer { max-width: 100%; }
+  .v7-hero h1 { font-size: clamp(32px, 10vw, 58px); }
+}
+@media (max-width: 380px) {
+  .product-grid, .v1-cases, .v1-vendors, .v5-vendors, .v5-zones { grid-template-columns: minmax(0, 1fr); }
+}
