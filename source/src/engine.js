@@ -207,8 +207,9 @@
       }).join('') + '</div>';
     }
     var cards = list.map(function (c, i) {
+      var casePhoto = CFG.id === 'v5' && !opt.noPhotos && (window.CI_V5_MEDIA || {}).cases ? window.CI_V5_MEDIA.cases[i] : null;
       return '<article class="case rv" data-tag="' + c.tag + '">' +
-        '<div class="case-media" style="background-image:url(' + raster(101 + i * 37, 640, 460) + ')">' +
+        '<div class="case-media" style="background-image:url(' + (casePhoto || raster(101 + i * 37, 640, 460)) + ')">' +
         '<span class="case-tag">' + c.tag + '</span><span class="case-idx">0' + (i + 1) + '</span></div>' +
         '<div class="case-body"><h3>' + c.title + '</h3><p>' + c.text + '</p>' +
         '<div class="case-metrics">' + c.metrics.map(function (m) {
@@ -241,6 +242,7 @@
 
   function productPhoto(p) {
     var P = window.CI_PHOTOS || {};
+    if (CFG.id === 'v5') return ((window.CI_V5_MEDIA || {}).products || {})[p.id] || null;
     if (!P.merch_wear) return null;
     if (p.cat === 'hoodie' || p.cat === 'shirt') return p.seed % 2 ? P.merch_wear : P.merch_detail;
     if (p.cat === 'mug') return P.coffee_bar;
@@ -248,10 +250,10 @@
     return null;
   }
 
-  function productCard(p) {
-    var ph = productPhoto(p);
+  function productCard(p, noPhotos) {
+    var ph = noPhotos ? null : productPhoto(p);
     return '<article class="product rv' + (ph ? ' has-photo' : '') + '" data-cat="' + p.cat + '">' +
-      '<div class="product-media" style="background-image:url(' + (ph || productImg(p)) + ')">' + ic(p.icon, 'product-ico') + '</div>' +
+      '<div class="product-media" style="background-image:url(' + (ph || productImg(p)) + ')">' + (ph ? '' : ic(p.icon, 'product-ico')) + '</div>' +
       '<div class="product-body"><span class="product-cat">' + CATNAMES[p.cat] + '</span><h3>' + p.title + '</h3>' +
       (p.note ? '<p class="product-note">' + p.note + '</p>' : '') +
       '<div class="product-foot"><b>' + p.price.toLocaleString('ru-RU') + ' ₽</b>' +
@@ -270,7 +272,7 @@
         return '<button class="chip' + (i === 0 ? ' is-on' : '') + '" data-cat="' + c + '">' + (c === 'all' ? 'Всё' : CATNAMES[c]) + '</button>';
       }).join('') + '</div>';
     }
-    return chips + '<div class="product-grid">' + list.map(productCard).join('') + '</div>';
+    return chips + '<div class="product-grid">' + list.map(function (p) { return productCard(p, CFG.id === 'v5' && opt.noChips); }).join('') + '</div>';
   }
 
   function contactsRows() {
@@ -690,7 +692,7 @@
       servicesRows: servicesCards(),
       serviceRowsAll: servicesCards(),
       casesHtml: casesGrid(),
-      casesHome: casesGrid({ noChips: true, limit: 3 }),
+      casesHome: casesGrid({ noChips: true, limit: 3, noPhotos: CFG.id === 'v5' }),
       vendorsHtml: vendorsGrid(),
       vendorsTable: '<table class="v4-table"><thead><tr><th>Вендор</th><th>Направление</th><th>Статус</th></tr></thead><tbody>' +
         CFG.vendors.map(function (v) { return '<tr><td>' + v[0] + '</td><td>' + v[1] + '</td><td>партнёр</td></tr>'; }).join('') +
@@ -716,7 +718,7 @@
       })(),
       menuHtml: menuList(),
       zonesHtml: zonesGrid(),
-      shopHtml: '<div class="ci-banner" style="background-image:url(' + ((window.CI_PHOTOS || {}).merch || raster(51, 820, 400)) + ')"></div>' + shopGrid(),
+      shopHtml: (CFG.id === 'v5' ? '' : '<div class="ci-banner" style="background-image:url(' + ((window.CI_PHOTOS || {}).merch || raster(51, 820, 400)) + ')"></div>') + shopGrid(),
       shopPreview: shopGrid({ noChips: true, limit: 4 }),
       contactsHtml: contactsRows(),
       sponsorStats: sponsorStats(),
@@ -727,6 +729,8 @@
         'Облака', 'Свежая обжарка', 'Мерч', 'Игровой клуб', 'Автомастерская', 'Музыкальный магазин', 'Gamedev', 'Консоли'], 'mq-dark'),
       marqueeOpen: marquee(['Открыто 08:00–23:00', 'Свободных мест: 7 из 24', 'Свежая обжарка каждые две недели',
         'Кофе в подарок к первой заявке', 'Бесплатная диагностика 30 минут', 'Свой мерч у бара'], 'mq-light'),
+      photoWearHome: (window.CI_PHOTOS || {}).ag_case2 || raster(620, 860, 560),
+      photoDetailHome: (window.CI_PHOTOS || {}).ag_interior || raster(621, 860, 560),
       photoBar: (window.CI_PHOTOS || {}).coffee_bar || raster(610, 860, 560),
       photoWear: (window.CI_PHOTOS || {}).merch_wear || raster(611, 860, 560),
       photoDetail: (window.CI_PHOTOS || {}).merch_detail || raster(612, 860, 560),

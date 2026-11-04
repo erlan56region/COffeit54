@@ -31,8 +31,21 @@ def build(vid):
         photos["hero"] = "data:image/jpeg;base64," + base64.b64encode(image).decode("ascii")
     elif vid == "v4":
         photos["hero"] = photos["coffee_bar"]
+    if vid == "v5":
+        all_photos = json.loads((ROOT / "photos.json").read_text(encoding="utf-8"))
+        for name in ["ag_case1", "ag_case2", "ag_case3", "ag_team", "ag_product", "ag_hero2", "ag_event", "ag_interior"]:
+            photos[name] = all_photos[name]
     photos = json.dumps(photos, ensure_ascii=False)
+    media_script = ""
+    if vid == "v5":
+        products = {p.stem: "data:image/jpeg;base64," + base64.b64encode(p.read_bytes()).decode("ascii") for p in sorted((ROOT / "images" / "products").glob("p*.jpg"))}
+        media_script = "<script>window.CI_V5_MEDIA = {products:" + json.dumps(products) + ", cases:['ag_case3','ag_team','ag_case1','ag_product','ag_hero2','ag_event'].map(function (key) { return window.CI_PHOTOS[key]; })};</script>"
     mobile_css = (SRC / "mobile.css").read_text(encoding="utf-8")
+    theme_css = (SRC / "v5-theme.css").read_text(encoding="utf-8") if vid == "v5" else ""
+    theme_script = ""
+    if vid == "v5":
+        winter = {name: "data:image/jpeg;base64," + base64.b64encode((ROOT / "images" / filename).read_bytes()).decode("ascii") for name, filename in [("hero", "winter-cafe.jpg"), ("bar", "winter-bar.jpg")]}
+        theme_script = "<script>window.CI_WINTER_PHOTOS = " + json.dumps(winter) + ";</script>\n<script>\n" + (SRC / "v5-theme.js").read_text(encoding="utf-8") + "\n</script>"
     title, desc = TITLES[vid]
 
     html = f"""<!DOCTYPE html>
@@ -48,6 +61,7 @@ def build(vid):
 {base}
 {skin_css}
 {mobile_css}
+{theme_css}
 </style>
 </head>
 <body data-variant="{vid}">
@@ -55,6 +69,7 @@ def build(vid):
 <script>
 window.CI_PHOTOS = {photos};
 </script>
+{media_script}
 <script>
 {data}
 </script>
@@ -64,6 +79,7 @@ window.CI_PHOTOS = {photos};
 <script>
 {engine}
 </script>
+{theme_script}
 </body>
 </html>
 """
