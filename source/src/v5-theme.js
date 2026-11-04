@@ -12,12 +12,16 @@
   try { saved = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) {}
   var selected = Object.prototype.hasOwnProperty.call(palettes, saved.palette) ? saved.palette : 'blue';
   var winter = typeof saved.winter === 'boolean' ? saved.winter : true;
+  var night = saved.night === true;
+  var nightColors = {blue:'#b5cbff',forest:'#9cdbba',coffee:'#f0c09a',berry:'#f1b6c8',violet:'#d0bcff'};
   function boot() {
     var head = document.querySelector('.v5-head');
     if (!head) return;
     var panel = document.createElement('section'); panel.className = 'v5-appearance'; panel.setAttribute('aria-label','Оформление сайта');
     panel.innerHTML = '<div class="wrap v5-appearance-wrap"><div class="v5-appearance-intro"><span class="v5-appearance-spark" aria-hidden="true">✳</span><span><b>Сайт под настроение</b><small>Выберите свою атмосферу</small></span></div><details class="v5-theme-menu"><summary><span class="v5-current-swatch" aria-hidden="true"></span><span class="v5-current-label">Классика</span><span class="v5-chevron" aria-hidden="true">⌄</span></summary><div class="v5-theme-popover"><div class="v5-popover-heading"><span>ВАША ПАЛИТРА</span><b>Какой будет ваш coffeeIT?</b><small>Цвет меняется на всех страницах</small></div><div class="v5-palettes" role="group" aria-label="Цветовая схема"></div><div class="v5-season-control"><div><b>Новогоднее настроение</b><small>Праздничный дизайн и снег</small></div><button type="button" class="v5-winter-toggle" aria-label="Новогоднее оформление"><span class="v5-toggle-track" aria-hidden="true"><span></span></span><span class="v5-toggle-text"></span></button></div><p class="v5-appearance-note">✦ Выбор сохранится на этом устройстве</p></div></details></div>';
     head.insertAdjacentElement('afterend', panel);
+    var dayNight = head.querySelector('.v5-day-night');
+    if (dayNight) dayNight.addEventListener('click', function () { night = !night; apply(); save(); });
     var group = panel.querySelector('.v5-palettes');
     Object.keys(palettes).forEach(function (id) {
       var b = document.createElement('button'); b.type = 'button'; b.dataset.palette = id;
@@ -43,6 +47,19 @@
     function apply() {
       var p = palettes[selected], style = document.body.style;
       var vars = {'--bg':p.bg,'--card':p.card,'--fg':p.fg,'--muted':p.muted,'--line':p.line,'--accent':p.color,'--btn-bg':p.color,'--btn-fg':'#ffffff','--accent-fg':'#ffffff','--tile':p.tile,'--tile-fg':p.color,'--input-bg':p.card,'--tag-bg':p.tile,'--tag-fg':p.fg};
+      if (night) {
+        vars['--bg'] = '#101722'; vars['--card'] = '#1c2634'; vars['--fg'] = '#f1f4f8';
+        vars['--muted'] = '#b8c5d4'; vars['--line'] = '#435165'; vars['--accent'] = nightColors[selected];
+        vars['--tile'] = '#303e50'; vars['--tile-fg'] = nightColors[selected]; vars['--input-bg'] = '#222f3e';
+        vars['--tag-bg'] = '#303e50'; vars['--tag-fg'] = '#f1f4f8';
+      }
+      document.body.classList.toggle('v5-night', night);
+      if (dayNight) {
+        dayNight.setAttribute('aria-pressed', String(night));
+        dayNight.setAttribute('aria-label', night ? 'Включить дневной режим' : 'Включить ночной режим');
+        dayNight.querySelector('.v5-day-night-icon').textContent = night ? '☀' : '☾';
+        dayNight.querySelector('.v5-day-night-label').textContent = night ? 'День' : 'Ночь';
+      }
       Object.keys(vars).forEach(function (name) { style.setProperty(name, vars[name]); });
       group.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.palette === selected)); });
       toggle.setAttribute('aria-pressed', String(winter));
@@ -52,7 +69,7 @@
       document.body.classList.toggle('v5-winter', winter);
       photos.forEach(function (el, index) { var image = el.classList.contains('v5-hero-photo') ? window.CI_WINTER_PHOTOS.hero : (index === 1 ? window.CI_WINTER_PHOTOS.bar : null); el.style.backgroundImage = winter && image ? 'url("' + image + '")' : el.dataset.originalBackground; });
     }
-    function save() { try { localStorage.setItem(key, JSON.stringify({palette:selected,winter:winter})); } catch (e) {} }
+    function save() { try { localStorage.setItem(key, JSON.stringify({palette:selected,winter:winter,night:night})); } catch (e) {} }
     apply();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

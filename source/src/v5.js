@@ -24,6 +24,7 @@
     '<nav class="v5-nav">' + links() + '</nav>' +
     '<div class="v5-head-r"><span class="v5-tel">+7 495 000-00-00</span>' +
     '<button class="v5-cart" data-cart-open aria-label="Корзина">{{ic:cart}}<span class="badge" id="cartBadge">0</span></button>' +
+    '<button type="button" class="v5-day-night" aria-label="Включить ночной режим" aria-pressed="false"><span class="v5-day-night-icon" aria-hidden="true">☾</span><span class="v5-day-night-label">Ночь</span></button>' +
     '<a class="btn" href="#contacts" data-cta="project">Оставить заявку</a>' +
     '<button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><i></i><i></i><i></i></button>' +
     '</div></div></header><nav class="mobile-menu">' + links() + '</nav>';
