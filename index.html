@@ -3,224 +3,1065 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ver. 1.0.0 · coffeeIT — 7 вариантов сайта</title>
+<title>ver. 1.1.0 · coffeeIT — один сайт, восемь обликов</title>
+<meta name="description" content="coffeeIT — один сайт, который сам меняет облик: восемь дизайнов, плавные переходы через минуту бездействия.">
+<meta name="theme-color" content="#0c0c0e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230c0c0e'/%3E%3Cpath d='M14 18h16v10a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18Z' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3Cpath d='M30 21h3a3.5 3.5 0 0 1 0 7h-3' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3C/svg%3E">
 <style>
-  *{box-sizing:border-box}
-  body{margin:0;background:#f2f1ee;color:#14120f;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1180px;margin:0 auto;padding:clamp(28px,5vw,64px) 20px}
-  header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px}
-  h1{font-size:clamp(28px,4.6vw,52px);line-height:1;letter-spacing:-.03em;margin:0 0 10px}
-  .lead{max-width:60ch;font-size:15px;line-height:1.6;color:#5c574e;margin:0}
-  .tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8a8377;display:block;margin-bottom:12px}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-  .card{background:#fff;border:1px solid #dedad2;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.18s}
-  .card:hover{box-shadow:0 18px 44px rgba(20,18,15,.12);transform:translateY(-3px)}
-  .prev{aspect-ratio:16/9;position:relative;overflow:hidden;border-bottom:1px solid #dedad2}
-  .body{padding:18px 20px 22px;display:grid;gap:8px}
-  .body h2{font-size:18px;margin:0;letter-spacing:-.02em}
-  .body p{font-size:13.5px;line-height:1.55;color:#5c574e;margin:0}
-  .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-  .meta span{font-size:11.5px;border:1px solid #dedad2;border-radius:999px;padding:3px 9px;color:#6b655a}
-  .cta{margin-top:10px;font-size:13.5px;font-weight:600}
-  /* мини-превью */
-  .mock{position:absolute;inset:0;display:flex;flex-direction:column}
-  .mock .bar{height:18%;display:flex;align-items:center;gap:5px;padding:0 10px}
-  .mock .bar i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.35;display:block}
-  .mock .bar u{width:26px;height:5px;border-radius:2px;background:currentColor;opacity:.28;display:block;margin-left:auto}
-  .mock .stage{flex:1;display:flex;gap:8px;padding:10px 12px}
-  .mock .stage>div{flex:1;border-radius:3px;min-width:0}
-  .mock .h1,.mock .h2{flex:none!important;border-radius:3px!important}
-  /* v1 */
-  .m1{background:#f4efe4;color:#16130f}
-  .m1 .bar{border-bottom:1px solid rgba(22,19,15,.18)}
-  .m1 .h1{background:#16130f;height:9px;width:64%;border-radius:0}
-  .m1 .h2{background:#16130f;height:9px;width:44%;margin-top:6px}
-  .m1 .ph{background:linear-gradient(150deg,#2c1d13,#8a5a34 60%,#c98a53);border-radius:0!important}
-  .col{display:flex;flex-direction:column;justify-content:center}
-  /* v2 */
-  .m2{background:#0b0d0c;color:#c6f24e}
-  .m2 .bar{border-bottom:1px solid rgba(255,255,255,.14)}
-  .m2 .h1{background:#eef3ee;height:10px;width:70%;border-radius:2px}
-  .m2 .h2{background:#c6f24e;height:10px;width:36%;margin-top:6px;border-radius:2px}
-  .m2 .ph{background:linear-gradient(150deg,#12241a,#2f6b4f 70%,#c6f24e);border-radius:6px!important}
-  /* v3 */
-  .m3{background:#f3ece0;color:#1b1410}
-  .m3 .bar{border-bottom:3px solid #1b1410}
-  .m3 .h1{background:#1b1410;height:12px;width:74%}
-  .m3 .h2{background:#ff7a29;border:2px solid #1b1410;height:12px;width:40%;margin-top:6px}
-  .m3 .ph{background:linear-gradient(140deg,#ff7a29,#ffd166 60%,#a8402a);border:2px solid #1b1410}
-  /* v4 */
-  .m4{background:#0a0c0a;color:#7ae78f}
-  .m4 .bar{border-bottom:1px solid rgba(233,236,233,.18);font-size:8px}
-  .m4 .h1{background:#e9ece9;height:7px;width:76%;border-radius:0}
-  .m4 .h2{background:#7ae78f;height:7px;width:52%;margin-top:5px}
-  .m4 .ph{background:repeating-linear-gradient(0deg,rgba(122,231,143,.22) 0 1px,transparent 1px 7px),repeating-linear-gradient(90deg,rgba(122,231,143,.22) 0 1px,transparent 1px 7px),#080b09;border:1px solid rgba(122,231,143,.35)}
-  /* v5 */
-  .m5{background:#f6f7f8;color:#101828}
-  .m5 .bar{background:#fff;border-bottom:1px solid #dde2e9}
-  .m5 .h1{background:#101828;height:9px;width:66%}
-  .m5 .h2{background:#1f4fd8;height:9px;width:46%;margin-top:6px}
-  .m5 .ph{background:linear-gradient(140deg,#1f4fd8,#8fa9e0 70%,#e9edf3);border-radius:6px!important}
-  .m5 .bars{background:#1f4fd8;height:16px;border-radius:0!important;margin:8px 12px 0}
-  .note{background:#fff;border:1px solid #dedad2;border-radius:12px;padding:18px 20px;margin-top:26px;font-size:13.5px;line-height:1.6;color:#5c574e}
-  .note b{color:#14120f}
-  code{background:#f2f1ee;border:1px solid #e3dfd7;border-radius:4px;padding:1px 5px;font-size:12.5px}
-  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+/* ============================================================
+   coffeeIT · «хамелеон»
+   Один сайт = восемь обликов. Оболочка показывает вариант
+   в iframe на весь экран, а через минуту бездействия сама
+   сменяет его — плавно, четырьмя разными переходами.
+   ============================================================ */
+
+:root{
+  --ink:#f4f0ea;
+  --ink-dim:rgba(244,240,234,.62);
+  --glass:rgba(14,14,17,.68);
+  --glass-2:rgba(20,20,24,.82);
+  --stroke:rgba(255,255,255,.13);
+  --stroke-soft:rgba(255,255,255,.07);
+  --accent:#c9a37a;
+  --chrome-h:56px;
+  --ease:cubic-bezier(.22,.8,.24,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:#0c0c0e;color:var(--ink);overflow:hidden;
+  font:14px/1.45 "Inter",-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;letter-spacing:-.006em;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg{display:block}
+::selection{background:var(--accent);color:#0c0c0e}
+
+/* ---------- сцена ---------- */
+#stage{position:fixed;inset:0;background:#0c0c0e;isolation:isolate}
+.frame{position:absolute;inset:0;overflow:hidden;background:#0c0c0e;will-change:transform,opacity,clip-path}
+.frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+.frame.is-preload{visibility:hidden;pointer-events:none;z-index:0}
+.frame.is-current{z-index:2}
+.frame.is-incoming{z-index:3}
+.frame.is-outgoing{z-index:1}
+
+/* ---------- занавес перехода ---------- */
+#veil{
+  position:fixed;inset:0;z-index:40;pointer-events:none;
+  display:grid;place-items:center;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 12% 8%, color-mix(in srgb, var(--veil-accent) 92%, #fff 8%), transparent 62%),
+    linear-gradient(112deg, var(--veil-bg) 0%, var(--veil-accent) 58%, var(--veil-bg) 100%);
+  color:var(--veil-ink);
+  transform:translateX(-104%);
+  clip-path:polygon(0 0,100% 0,95% 100%,0 100%);
+  will-change:transform;
+}
+#veil::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(0,0,0,.18) 1px,transparent 1px);
+  background-size:4px 4px;opacity:.5;mix-blend-mode:overlay;
+}
+#veil .v-inner{position:relative;display:grid;place-items:center;gap:12px;text-align:center;padding:20px}
+#veil .v-num{font-size:clamp(40px,11vw,120px);font-weight:600;letter-spacing:-.06em;line-height:.9;opacity:.9}
+#veil .v-name{font-size:clamp(15px,2.4vw,22px);letter-spacing:.02em}
+#veil .v-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.65}
+#veil .v-cup{width:clamp(34px,5vw,52px);height:auto;opacity:.85}
+
+/* ---------- пусковая заставка ---------- */
+#splash{
+  position:fixed;inset:0;z-index:60;display:grid;place-items:center;
+  background:radial-gradient(120% 100% at 50% 0%,#1a1a20 0%,#0a0a0c 70%);
+  transition:opacity .6s var(--ease),visibility .6s;
+}
+#splash.is-off{opacity:0;visibility:hidden;pointer-events:none}
+#splash .s-box{display:grid;justify-items:center;gap:18px;text-align:center;padding:24px}
+#splash svg{width:44px;height:44px;opacity:.9;animation:cupFloat 2.6s ease-in-out infinite}
+#splash b{font-size:15px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+#splash p{margin:0;font-size:12.5px;color:var(--ink-dim);max-width:32ch}
+.s-bar{width:180px;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.s-bar i{display:block;height:100%;width:40%;border-radius:2px;background:var(--ink);animation:barSlide 1.25s ease-in-out infinite}
+@keyframes barSlide{0%{transform:translateX(-110%)}100%{transform:translateX(300%)}}
+@keyframes cupFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ---------- хром ---------- */
+#chrome{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  padding:0 clamp(12px,2.2vw,26px) clamp(12px,2.2vw,22px);
+  pointer-events:none;
+  transition:opacity .5s var(--ease);
+}
+#chrome>*{pointer-events:auto}
+#chrome.is-idle{opacity:.52}
+#chrome.is-idle:hover{opacity:1}
+
+/* капсула */
+#pill{
+  display:flex;align-items:center;gap:14px;
+  padding:10px 12px 10px 10px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--stroke);
+  box-shadow:0 16px 44px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+  max-width:min(560px,calc(100vw - 24px));
+}
+.ring{position:relative;width:44px;height:44px;flex:none;display:grid;place-items:center}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring .trk{fill:none;stroke:rgba(255,255,255,.14);stroke-width:2.5}
+.ring .val{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;
+  stroke-dasharray:113.1;stroke-dashoffset:0;transition:stroke .5s}
+.ring .num{font-size:13px;font-weight:600;letter-spacing:-.02em;position:relative}
+.ring.is-paused .val{stroke:rgba(255,255,255,.25)}
+#pill .meta{display:grid;gap:1px;min-width:0}
+#pill .meta b{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pill .meta span{font-size:11.5px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pill .meta span em{font-style:normal;color:var(--ink);opacity:.85}
+#pill .acts{display:flex;align-items:center;gap:2px;margin-left:4px}
+.btn-ic{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  color:var(--ink-dim);transition:background .18s,color .18s,transform .18s}
+.btn-ic:hover{background:rgba(255,255,255,.1);color:var(--ink)}
+.btn-ic:active{transform:scale(.94)}
+.btn-ic svg{width:17px;height:17px}
+.btn-ic.is-on{color:var(--ink);background:rgba(255,255,255,.1)}
+
+/* полоса обликов */
+#swatches{display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--stroke);
+  box-shadow:0 16px 44px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.07);
+  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+  overflow:auto;scrollbar-width:none;max-width:min(100%,calc(100vw - 24px))}
+#swatches::-webkit-scrollbar{display:none}
+.sw{position:relative;width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;
+  font-size:10.5px;font-weight:600;border:1px solid rgba(255,255,255,.16);
+  transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
+.sw:hover{transform:translateY(-3px)}
+.sw.is-on{box-shadow:0 0 0 2px #0c0c0e,0 0 0 3.5px var(--ink);border-color:transparent}
+.sw::after{
+  content:attr(data-name);position:absolute;bottom:calc(100% + 9px);left:50%;transform:translate(-50%,4px);
+  background:#101014;border:1px solid var(--stroke);color:var(--ink);
+  font-size:11px;font-weight:500;letter-spacing:0;padding:5px 9px;border-radius:7px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.18s;z-index:5;
+}
+.sw:hover::after{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- панель «все облики» ---------- */
+#panel{
+  position:fixed;left:clamp(12px,2.2vw,26px);bottom:calc(var(--chrome-h) + 36px);z-index:55;
+  width:min(420px,calc(100vw - 24px));max-height:min(70vh,640px);
+  display:flex;flex-direction:column;
+  background:var(--glass-2);border:1px solid var(--stroke);border-radius:20px;
+  box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07);
+  backdrop-filter:blur(26px) saturate(1.5);-webkit-backdrop-filter:blur(26px) saturate(1.5);
+  opacity:0;visibility:hidden;transform:translateY(14px) scale(.985);transform-origin:0 100%;
+  transition:opacity .28s var(--ease),transform .28s var(--ease),visibility .28s;
+  overflow:hidden;
+}
+#panel.is-open{opacity:1;visibility:visible;transform:none}
+.p-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 18px 12px}
+.p-head h2{margin:0;font-size:15px;font-weight:600;letter-spacing:-.02em}
+.p-head p{margin:4px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink-dim);max-width:34ch}
+.p-scroll{overflow:auto;padding:0 10px 12px;scrollbar-width:thin}
+.p-scroll::-webkit-scrollbar{width:8px}
+.p-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
+.skin{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px;width:100%;
+  padding:9px 10px;border-radius:12px;text-align:left;transition:background .16s}
+.skin:hover{background:rgba(255,255,255,.06)}
+.skin.is-on{background:rgba(255,255,255,.09)}
+.skin .chip{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.18);
+  display:grid;place-items:center;font-size:11px;font-weight:600}
+.skin .txt{display:grid;gap:2px;min-width:0}
+.skin .txt b{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skin .txt span{font-size:11px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skin .mark{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
+.skin.is-on .mark{color:var(--ink)}
+.p-set{border-top:1px solid var(--stroke-soft);padding:14px 18px 16px;display:grid;gap:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.row>span{font-size:12px;color:var(--ink-dim)}
+.seg{display:flex;gap:2px;padding:3px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid var(--stroke-soft)}
+.seg button{font-size:11.5px;padding:5px 9px;border-radius:6px;color:var(--ink-dim);transition:.16s;white-space:nowrap}
+.seg button:hover{color:var(--ink)}
+.seg button.is-on{background:rgba(255,255,255,.14);color:var(--ink)}
+.p-links{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 12px}
+.p-links a,.p-links button{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:7px 11px;border-radius:999px;
+  border:1px solid var(--stroke);color:var(--ink);transition:background .18s,border-color .18s;text-decoration:none}
+.p-links a:hover,.p-links button:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24)}
+.p-links svg{width:13px;height:13px;opacity:.75}
+.p-foot{padding:0 18px 16px;font-size:11px;line-height:1.5;color:var(--ink-dim)}
+.p-foot code{font-size:10.5px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px}
+
+/* ---------- подсказка ---------- */
+#hint{
+  position:fixed;left:50%;bottom:calc(var(--chrome-h) + 44px);transform:translate(-50%,10px);pointer-events:none;
+  z-index:52;max-width:min(460px,calc(100vw - 28px));
+  padding:11px 16px;border-radius:999px;display:flex;align-items:center;gap:10px;
+  background:var(--glass-2);border:1px solid var(--stroke);color:var(--ink);
+  font-size:12.5px;line-height:1.35;box-shadow:0 18px 40px rgba(0,0,0,.4);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  opacity:0;visibility:hidden;transition:.4s var(--ease);
+}
+#hint.is-on{opacity:1;visibility:visible;transform:translate(-50%,0)}
+#hint b{font-weight:600}
+#hint .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+
+/* ---------- прогресс перехода ---------- */
+#glow{position:fixed;inset:0;z-index:39;pointer-events:none;opacity:0;
+  background:radial-gradient(80% 60% at 50% 50%,var(--glow-c,#fff),transparent 70%);mix-blend-mode:soft-light}
+
+/* ---------- адаптив ---------- */
+@media (max-width:860px){
+  :root{--chrome-h:52px}
+  #chrome{padding:0 10px calc(10px + env(safe-area-inset-bottom));gap:8px;flex-direction:column;align-items:stretch}
+  #swatches{order:2;padding:6px;justify-content:flex-start}
+  #pill{order:1;width:100%;max-width:none;gap:10px;padding:8px 10px 8px 8px}
+  #pill .meta b{font-size:12.5px}
+  #pill .meta span{font-size:11px}
+  .ring{width:40px;height:40px}
+  #panel{left:10px;right:10px;width:auto;bottom:126px;max-height:60vh}
+  #hint{bottom:128px;font-size:12px}
+  .sw{width:28px;height:28px}
+  #chrome.is-idle{opacity:.75}
+}
+@media (max-width:420px){
+  #pill .acts .optional{display:none}
+  #pill .meta span{max-width:42vw}
+}
+
+/* ---------- уважение к настройкам системы ---------- */
+@media (prefers-reduced-motion: reduce){
+  #veil{display:none}
+  #splash svg,#splash .s-bar i{animation:none}
+  .frame{will-change:auto}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div>
-      <span class="tag">coffeeIT · кофейня × пространство × IT-интегратор</span>
-      <h1>Семь сайтов — один бренд</h1>
-      <p class="lead">Каждый файл автономный: внутри весь HTML, CSS, JavaScript, логотип, иллюстрации, фотографии и шрифты. Два новых варианта (6 и 7) — в стиле премиальных диджитал-агентств: такой сайт хочется «купить». Откройте вариант в браузере или загрузите на хостинг как <code>index.html</code>. Навигация, кейсы, фильтры, корзина и формы работают в каждом.</p>
+
+<div id="stage" aria-live="off"></div>
+
+<div id="veil" aria-hidden="true">
+  <div class="v-inner">
+    <div class="v-tag">coffeeIT · смена облика</div>
+    <div class="v-num" id="veilNum">№6</div>
+    <div class="v-name" id="veilName">Agency Editorial</div>
+    <svg class="v-cup" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M12 17h20v12a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8V17Z" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M32 21h3.5a4.5 4.5 0 0 1 0 9H32" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M17 10c0 2-2 2.6-2 4.6M24 8.6c0 2-2 2.6-2 4.6M31 10c0 2-2 2.6-2 4.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+    </svg>
+  </div>
+</div>
+
+<div id="glow" aria-hidden="true"></div>
+
+<div id="splash">
+  <div class="s-box">
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M12 17h20v12a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8V17Z" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M32 21h3.5a4.5 4.5 0 0 1 0 9H32" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M17 10c0 2-2 2.6-2 4.6M24 8.6c0 2-2 2.6-2 4.6M31 10c0 2-2 2.6-2 4.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+    </svg>
+    <b>coffeeIT</b>
+    <div class="s-bar"><i></i></div>
+    <p>Один сайт, восемь обликов. Готовим первый.</p>
+  </div>
+</div>
+
+<script>
+/* страховка: если основной скрипт упадёт, заставка всё равно уйдёт */
+setTimeout(function () {
+  var sp = document.getElementById('splash');
+  if (sp && !sp.classList.contains('is-off')) sp.classList.add('is-off');
+}, 7000);
+</script>
+
+<div id="hint" role="status">
+  <i class="dot"></i>
+  <span id="hintText">Через минуту бездействия сайт сам сменит облик — плавно.</span>
+</div>
+
+<div id="chrome">
+  <div id="pill">
+    <div class="ring" id="ring">
+      <svg viewBox="0 0 44 44" aria-hidden="true">
+        <circle class="trk" cx="22" cy="22" r="18"></circle>
+        <circle class="val" id="ringVal" cx="22" cy="22" r="18"></circle>
+      </svg>
+      <span class="num" id="pillNum">6</span>
+    </div>
+    <div class="meta">
+      <b id="pillName">№6 · Agency Editorial</b>
+      <span id="pillNext">далее — №2 «Смена» · 0:58</span>
+    </div>
+    <div class="acts">
+      <button class="btn-ic is-on" id="btnAuto" aria-label="Автоматическая смена облика" title="Автосмена">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6a6 6 0 1 0 0 12h1"/><path d="M15 18a6 6 0 1 0 0-12h-1"/><path d="M8 9h8M8 15h8" opacity=".0"/></svg>
+      </button>
+      <button class="btn-ic" id="btnNext" aria-label="Сменить облик сейчас" title="Сменить сейчас (→)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+      </button>
+      <button class="btn-ic optional" id="btnAll" aria-label="Все облики и настройки" title="Все облики">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="7" cy="17" r="2.4"/><circle cx="17" cy="17" r="2.4"/></svg>
+      </button>
     </div>
   </div>
 
-  <div class="grid">
+  <div id="swatches" role="tablist" aria-label="Облики сайта"></div>
+</div>
 
-    <a class="card" href="coffeeit-v6.html">
-      <div class="prev" style="background:#faf9f7">
-        <div class="mock" style="background:#faf9f7;color:#111110">
-          <div class="bar" style="border-bottom:1px solid rgba(17,17,16,.14)"><i></i><i></i><i></i><u></u></div>
-          <div class="stage" style="padding:14px 16px;gap:12px">
-            <div class="col" style="flex:1.2"><div style="background:#111110;height:14px;width:78%;border-radius:2px"></div>
-              <div style="background:#111110;height:14px;width:52%;border-radius:2px;margin-top:6px"></div>
-              <div style="background:#0b5d3b;height:14px;width:64%;border-radius:2px;margin-top:6px"></div>
-              <div style="background:#e9e2d6;height:6px;width:88%;border-radius:2px;margin-top:12px"></div></div>
-            <div style="flex:1;background:linear-gradient(160deg,#2b1d14,#8a6a4b 60%,#c9a37a);border-radius:6px"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>6. «Agency Editorial» — светлое премиум-агентство</h2>
-        <p>Почти белый фон, огромные заголовки с антиквой в акценте, глубокий зелёный, тонкие линии, воздух. Услуги — крупными строками, проекты — фото-карточками с раскрытием при наведении, командный блок и живая панель кофейни.</p>
-        <div class="meta"><span>светлый</span><span>премиум</span><span>бенто-фото</span><span>8 разделов</span></div>
-        <div class="cta">Открыть вариант 6 →</div>
-      </div>
-    </a>
-
-    <a class="card" href="coffeeit-v7.html">
-      <div class="prev" style="background:#09090a">
-        <div class="mock" style="background:#09090a;color:#f4f0ea">
-          <div class="bar" style="border-bottom:1px solid rgba(244,240,234,.16)"><i></i><i></i><i></i><u></u></div>
-          <div class="stage" style="padding:14px 16px;gap:12px">
-            <div class="col" style="flex:1.2">
-              <div style="background:#f4f0ea;height:16px;width:82%;border-radius:1px"></div>
-              <div style="border:1.5px solid rgba(244,240,234,.4);height:16px;width:60%;margin-top:6px"></div>
-              <div style="background:#c9a37a;height:8px;width:40%;margin-top:8px"></div>
-              <div style="background:rgba(244,240,234,.14);height:6px;width:88%;margin-top:12px"></div>
-            </div>
-            <div style="flex:1;background:linear-gradient(160deg,#1a1208,#6b4a2a 60%,#c9a37a);border:1px solid rgba(244,240,234,.16)"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>7. «Noir Premium» — тёмный агентский брутализм</h2>
-        <p>Почти чёрный фон, кремовая типографика, гигантские заголовки в две строки (одна — контурная), медный акцент. Проекты — горизонтальными строками с фото, спонсорство — карточками-таблетками и тарифной сеткой.</p>
-        <div class="meta"><span>тёмный</span><span>агентский</span><span>крупная типографика</span><span>8 разделов</span></div>
-        <div class="cta">Открыть вариант 7 →</div>
-      </div>
-    </a>
-
-    <a class="card" href="coffeeit-v1.html">
-      <div class="prev">
-        <div class="mock m1">
-          <div class="bar"><i></i><i></i><i></i><u></u></div>
-          <div class="stage">
-            <div class="col"><div class="h1"></div><div class="h2"></div></div>
-            <div class="ph"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>1. «Код и зерно» — редакционный премиум</h2>
-        <p>Кремовый фон, крупная антиква, тёмно-зелёный акцент, тонкие линии и «журнальная» сетка. Услуги — строками-нумерацией, кейсы — карточками с фото. Впечатление дорогой студии, а не рекламного лендинга.</p>
-        <div class="meta"><span>светлый</span><span>антиква</span><span>сдержанно</span><span>для крупных клиентов</span></div>
-        <div class="cta">Открыть вариант 1 →</div>
-      </div>
-    </a>
-
-    <a class="card" href="coffeeit-v2.html">
-      <div class="prev">
-        <div class="mock m2">
-          <div class="bar"><i></i><i></i><i></i><u></u></div>
-          <div class="stage">
-            <div class="col"><div class="h1"></div><div class="h2"></div></div>
-            <div class="ph"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>2. «Смена» — хай-тек графит и лайм</h2>
-        <p>Тёмный интерфейс, стеклянные панели, кислотный лайм, горизонтальная карусель услуг, плитки быстрых переходов и шаги «от эспрессо до продакшена». Самый технологичный и «продуктовый» из пяти.</p>
-        <div class="meta"><span>тёмный</span><span>хай-тек</span><span>карусель</span><span>для digital-аудитории</span></div>
-        <div class="cta">Открыть вариант 2 →</div>
-      </div>
-    </a>
-
-    <a class="card" href="coffeeit-v3.html">
-      <div class="prev">
-        <div class="mock m3">
-          <div class="bar"><i></i><i></i><i></i><u></u></div>
-          <div class="stage">
-            <div class="col"><div class="h1"></div><div class="h2"></div></div>
-            <div class="ph"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>3. «Coffee first» — нео-брутализм</h2>
-        <p>Молочный фон, толстые контуры, жёсткие тени, оранжевый акцент, стикеры и лозунг «Coffee first, code second». Воздушные карточки-постеры, крупные цифры шагов, много характера и юмора.</p>
-        <div class="meta"><span>светлый</span><span>брутализм</span><span>молодёжный</span><span>максимум эмоций</span></div>
-        <div class="cta">Открыть вариант 3 →</div>
-      </div>
-    </a>
-
-    <a class="card" href="coffeeit-v4.html">
-      <div class="prev">
-        <div class="mock m4">
-          <div class="bar"><i></i><i></i><i></i><u></u></div>
-          <div class="stage">
-            <div class="col"><div class="h1"></div><div class="h2"></div></div>
-            <div class="ph"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>4. «Terminal» — моно и YAML</h2>
-        <p>Эстетика терминала: моно-шрифт, зелёный prompt, окно консоли на главной, YAML-документы вместо блоков, вкладки-сервисы и таблица вендоров как база данных. Для инженерной аудитории и тех, кто ценит иронию в деталях.</p>
-        <div class="meta"><span>тёмный</span><span>моно-шрифт</span><span>терминал</span><span>для разработчиков</span></div>
-        <div class="cta">Открыть вариант 4 →</div>
-      </div>
-    </a>
-
-    <a class="card" href="coffeeit-v5.html">
-      <div class="prev">
-        <div class="mock m5">
-          <div class="bar"><i></i><i></i><i></i><u></u></div>
-          <div class="bars"></div>
-          <div class="stage">
-            <div class="col"><div class="h1"></div><div class="h2"></div></div>
-            <div class="ph"></div>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <h2>5. «Build &amp; Brew» — корпоративный кейс-сайт</h2>
-        <p>Светлый серо-стальной стиль, синий акцент, двухколоночная сетка, услуги строками-таблицей с ценами, полоса метрик, вкладки «зоны / меню / бронирование», FAQ и форма диагностики. Выглядит как сайт компании, у которой можно закупать оборудование.</p>
-        <div class="meta"><span>светлый</span><span>корпоративный</span><span>таблицы и вкладки</span><span>для B2B-закупок</span></div>
-        <div class="cta">Открыть вариант 5 →</div>
-      </div>
-    </a>
-
+<div id="panel" role="dialog" aria-modal="false" aria-labelledby="panelTitle">
+  <div class="p-head">
+    <div>
+      <h2 id="panelTitle">Восемь обликов</h2>
+      <p>Это один и тот же сайт: разделы, кейсы, магазин и формы общие. Меняется только дизайн.</p>
+    </div>
+    <button class="btn-ic" id="btnClose" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
   </div>
-
-  <div class="note">
-    <b>Что общего у всех вариантов:</b> 8 «страниц» внутри одного файла (Главная, Услуги, Кейсы/Проекты, Вендоры/Партнёры, Пространство, Спонсорство, Мерч, Контакты), логотип-кружка, магазин мерча с фильтрами и корзиной (сохраняется после перезагрузки), оформление заказа и заявок через почтовое приложение, бронирование места, кейсы с раскрывающимися подробностями и адаптивная вёрстка под телефон.<br><br>
-    <b>Что менять перед публикацией:</b> контакты, адрес, цены, кейсы и товары. Для каждого варианта это один блок в начале файла — инструкция в <code>README.md</code>. Сборка и установка зависимостей не нужны.
+  <div class="p-scroll" id="skinList"></div>
+  <div class="p-set">
+    <div class="row">
+      <span>Молчание перед сменой</span>
+      <div class="seg" id="segInt">
+        <button data-int="30">30 с</button>
+        <button data-int="60">1 мин</button>
+        <button data-int="120">2 мин</button>
+      </div>
+    </div>
+    <div class="row">
+      <span>Переходы</span>
+      <div class="seg" id="segTr">
+        <button data-tr="auto">все</button>
+        <button data-tr="veil">шторка</button>
+        <button data-tr="fade">тает</button>
+        <button data-tr="slide">слайд</button>
+      </div>
+    </div>
+    <div class="row">
+      <span>Автосмена</span>
+      <div class="seg" id="segAuto">
+        <button data-auto="1">вкл</button>
+        <button data-auto="0">выкл</button>
+      </div>
+    </div>
+  </div>
+  <div class="p-links">
+    <a id="lnkStandalone" href="coffeeit-v6.html" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+      Этот облик отдельно
+    </a>
+    <button id="btnLink" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+      Ссылка на этот облик
+    </button>
+  </div>
+  <div class="p-foot">
+    Смена случается только на главной странице и только когда сайт не трогают.
+    Прокрутка, клик или ввод сбрасывают таймер. Адресные параметры: <code>?skin=v7</code>, <code>?interval=90</code>, <code>?auto=0</code>.
   </div>
 </div>
+
+<script>
+/* ============================================================
+   1. ОБЛИКИ
+   ============================================================ */
+var SKINS = [
+  { id:'v1',   num:1, file:'coffeeit-v1.html',   name:'Код и зерно',      tag:'редакционный премиум',  bg:'#f4efe4', accent:'#1e4d3a', dark:false,
+    desc:'Кремовый фон, антиква, тёмно-зелёный акцент. Дорогая студия.' },
+  { id:'v2',   num:2, file:'coffeeit-v2.html',   name:'Смена',            tag:'хай-тек, графит и лайм', bg:'#0b0d0c', accent:'#c6f24e', dark:true,
+    desc:'Тёмный интерфейс, стекло, кислотный лайм, карусель услуг.' },
+  { id:'v3',   num:3, file:'coffeeit-v3.html',   name:'Coffee first',     tag:'нео-брутализм',          bg:'#f3ece0', accent:'#ff7a29', dark:false,
+    desc:'Толстые контуры, жёсткие тени, оранжевый, много характера.' },
+  { id:'v4',   num:4, file:'coffeeit-v4.html',   name:'Terminal',         tag:'моно, консоль, YAML',    bg:'#0a0c0a', accent:'#7ae78f', dark:true,
+    desc:'Эстетика терминала для инженерной аудитории.' },
+  { id:'v5',   num:5, file:'coffeeit-v5.html',   name:'Build & Brew',     tag:'корпоративный кейс',     bg:'#f6f7f8', accent:'#1f4fd8', dark:false,
+    desc:'Светлый, таблицы, тарифы, вкладки, оформление сайта.' },
+  { id:'v6',   num:6, file:'coffeeit-v6.html',   name:'Agency Editorial', tag:'светлое агентство',      bg:'#faf9f7', accent:'#0b5d3b', dark:false,
+    desc:'Почти белый, огромная типографика, бенто-фото, воздух.' },
+  { id:'v7',   num:7, file:'coffeeit-v7.html',   name:'Noir Premium',     tag:'тёмный брутализм',       bg:'#09090a', accent:'#c9a37a', dark:true,
+    desc:'Почти чёрный, кремовая типографика, медный акцент.' },
+  { id:'live', num:8, file:'coffeeit-live.html', name:'Live',             tag:'живой финальный',        bg:'#f6f7f8', accent:'#1f4fd0', dark:false,
+    desc:'Тот же корпоративный, но с анимациями, счётчиками и параллаксом.' }
+];
+var BY_ID = {};
+SKINS.forEach(function (s) { BY_ID[s.id] = s; });
+
+var HASH_LABEL = {
+  home:'главная', services:'услуги', cases:'кейсы', vendors:'вендоры', space:'пространство',
+  shop:'мерч', sponsorship:'спонсорство', contacts:'контакты'
+};
+
+/* ============================================================
+   2. НАСТРОЙКИ
+   ============================================================ */
+var DEFAULTS = { skin:null, interval:60, auto:true, transition:'auto' };
+var STORE = 'ci_chameleon_v1';
+var settings = Object.assign({}, DEFAULTS);
+
+function readStore() {
+  try {
+    var raw = JSON.parse(localStorage.getItem(STORE) || '{}') || {};
+    if (typeof raw.interval === 'number' && raw.interval >= 10) settings.interval = raw.interval;
+    if (typeof raw.auto === 'boolean') settings.auto = raw.auto;
+    if (raw.transition) settings.transition = raw.transition;
+    if (raw.skin && BY_ID[raw.skin]) settings.skin = raw.skin;
+  } catch (e) {}
+}
+function saveStore() {
+  try { localStorage.setItem(STORE, JSON.stringify(settings)); } catch (e) {}
+}
+
+function readParams() {
+  var q = new URLSearchParams(location.search);
+  if (q.get('skin') && BY_ID[q.get('skin')]) settings.skin = q.get('skin');
+  if (q.get('interval') && +q.get('interval') >= 10) settings.interval = Math.min(1800, +q.get('interval'));
+  if (q.get('auto') === '0') settings.auto = false;
+  if (q.get('auto') === '1') settings.auto = true;
+  var tr = q.get('transition');
+  if (tr && ['auto', 'veil', 'fade', 'slide', 'mix'].indexOf(tr) >= 0) settings.transition = tr;
+  if (q.get('reset') === '1') { try { localStorage.removeItem(STORE); } catch (e) {} }
+}
+readStore();
+readParams();
+
+var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   3. СОСТОЯНИЕ
+   ============================================================ */
+var stage = document.getElementById('stage');
+var veil = document.getElementById('veil');
+var glow = document.getElementById('glow');
+var chrome = document.getElementById('chrome');
+var ring = document.getElementById('ring');
+var ringVal = document.getElementById('ringVal');
+var pillNum = document.getElementById('pillNum');
+var pillName = document.getElementById('pillName');
+var pillNext = document.getElementById('pillNext');
+var hint = document.getElementById('hint');
+var hintText = document.getElementById('hintText');
+var swWrap = document.getElementById('swatches');
+var panel = document.getElementById('panel');
+var skinList = document.getElementById('skinList');
+
+var views = [];            // все созданные iframe-обёртки
+var cur = null;            // текущий облик
+var preload = null;        // заранее загруженный следующий
+var busy = false;          // идёт переход
+var lastActivity = Date.now();
+var nextSkin = null;
+var trIndex = 0;
+var trHistory = [];        // какие переходы уже были — чтобы «все» шли по кругу
+var live = { hash:'#home', y:0, max:1, overlay:false, ready:false };
+var booted = false;
+var pendingPick = null;      // выбор, сделанный во время перехода
+var splashDone = false;
+
+var RING_C = 2 * Math.PI * 18;  // длина окружности кольца (r=18)
+ringVal.style.strokeDasharray = RING_C.toFixed(2);
+
+/* ============================================================
+   4. ОБЁРТКА IFRAME
+   ============================================================ */
+function makeView(skin) {
+  var el = document.createElement('div');
+  el.className = 'frame is-preload';
+  var ifr = document.createElement('iframe');
+  ifr.setAttribute('title', 'coffeeIT — ' + skin.name);
+  ifr.setAttribute('loading', 'eager');
+  ifr.src = skin.file;
+  el.appendChild(ifr);
+  stage.appendChild(el);
+
+  var view = { skin: skin, el: el, ifr: ifr, loaded: false, ready: false, meta: { hash:'#home', y:0, max:1, overlay:false } };
+  view.readyPromise = new Promise(function (resolve) { view._resolve = resolve; });
+  ifr.addEventListener('load', function () {
+    view.loaded = true;
+    /* сам документ загружен — дальше ждём только ответ моста, и недолго */
+    setTimeout(function () { if (!view.ready) { view.ready = true; view._resolve(); } }, 900);
+  });
+  views.push(view);
+  return view;
+}
+
+/* Страховка от накопления iframe: оставляем только нужные кадры.
+   Вызывается после каждого перехода и после загрузки предзагрузки. */
+function sweep(keep) {
+  var allow = (keep || []).slice();
+  if (cur) allow.push(cur);
+  if (preload) allow.push(preload);
+  views.slice().forEach(function (v) {
+    if (allow.indexOf(v) < 0) destroyView(v);
+  });
+}
+
+function destroyView(view) {
+  if (!view) return;
+  views = views.filter(function (v) { return v !== view; });
+  if (view.el && view.el.parentNode) view.el.parentNode.removeChild(view.el);
+}
+
+function post(view, msg) {
+  try { view.ifr.contentWindow.postMessage(msg, '*'); } catch (e) {}
+}
+
+/* ждём, пока вариант загрузится и его мост ответит «ready» */
+function whenReady(view, limit) {
+  if (!view) return Promise.resolve();
+  if (view.ready || view.loaded) return Promise.resolve();
+  return Promise.race([
+    view.readyPromise,
+    new Promise(function (res) { setTimeout(res, limit || 8000); })
+  ]);
+}
+
+/* готов ли облик в течение ms? Возвращает true/false, не бросает. */
+function readyWithin(view, ms) {
+  if (!view) return Promise.resolve(false);
+  if (view.ready || view.loaded) return Promise.resolve(true);
+  return Promise.race([
+    view.readyPromise.then(function () { return true; }),
+    new Promise(function (res) { setTimeout(function () { res(view.ready || view.loaded); }, ms); })
+  ]);
+}
+
+/* ============================================================
+   5. МОСТ: активность, раздел, позиция прокрутки
+   ============================================================ */
+window.addEventListener('message', function (e) {
+  var view = null;
+  for (var i = 0; i < views.length; i++) {
+    if (views[i].ifr.contentWindow === e.source) { view = views[i]; break; }
+  }
+  if (!view) return;
+  var d = e.data || {};
+  if (!d.__ci) return;
+
+  if (d.type === 'ready' || d.type === 'state' || d.type === 'route' || d.type === 'scroll' || d.type === 'activity') {
+    view.meta.hash = d.hash || view.meta.hash;
+    view.meta.y = d.y || 0;
+    view.meta.max = d.max || 1;
+    view.meta.overlay = !!d.overlay;
+    if (d.type === 'ready') {
+      view.ready = true;
+      view._resolve();
+    }
+  }
+  if (view !== cur) return;               // скрытый/предзагруженный облик не влияет на таймер
+  live.hash = view.meta.hash;
+  live.y = view.meta.y;
+  live.max = view.meta.max;
+  live.overlay = view.meta.overlay;
+  live.ready = view.ready;
+  if (d.type === 'activity') noteActivity();
+  paintPill();
+});
+
+/* ============================================================
+   6. UI: полоса обликов, панель
+   ============================================================ */
+function buildSwatches() {
+  swWrap.innerHTML = '';
+  SKINS.forEach(function (s) {
+    var b = document.createElement('button');
+    b.className = 'sw';
+    b.type = 'button';
+    b.setAttribute('role', 'tab');
+    b.dataset.skin = s.id;
+    b.dataset.name = '№' + s.num + ' · ' + s.name;
+    b.setAttribute('aria-label', 'Облик ' + s.num + ': ' + s.name);
+    b.style.background = s.bg;
+    b.style.color = s.dark ? s.accent : s.bg;
+    b.innerHTML = '<span style="color:' + s.accent + '">' + s.num + '</span>';
+    b.addEventListener('click', function () { userPick(s.id); });
+    swWrap.appendChild(b);
+  });
+}
+
+function buildList() {
+  skinList.innerHTML = '';
+  SKINS.forEach(function (s) {
+    var b = document.createElement('button');
+    b.className = 'skin';
+    b.type = 'button';
+    b.dataset.skin = s.id;
+    b.innerHTML =
+      '<span class="chip" style="background:' + s.bg + ';color:' + s.accent + '">' + s.num + '</span>' +
+      '<span class="txt"><b>' + s.name + '</b><span>' + s.desc + '</span></span>' +
+      '<span class="mark">' + s.tag + '</span>';
+    b.addEventListener('click', function () { userPick(s.id); closePanel(); });
+    skinList.appendChild(b);
+  });
+}
+
+function paintSwatches() {
+  var id = cur ? cur.skin.id : null;
+  Array.prototype.forEach.call(swWrap.children, function (b) {
+    b.classList.toggle('is-on', b.dataset.skin === id);
+  });
+  Array.prototype.forEach.call(skinList.children, function (b) {
+    b.classList.toggle('is-on', b.dataset.skin === id);
+  });
+}
+
+function openPanel() {
+  panel.classList.add('is-open');
+  document.getElementById('btnAll').classList.add('is-on');
+}
+function closePanel() {
+  panel.classList.remove('is-open');
+  document.getElementById('btnAll').classList.remove('is-on');
+}
+
+document.getElementById('btnAll').addEventListener('click', function () {
+  panel.classList.contains('is-open') ? closePanel() : openPanel();
+});
+document.getElementById('btnClose').addEventListener('click', closePanel);
+
+document.getElementById('segInt').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  settings.interval = +b.dataset.int; saveStore(); noteActivity(); paintSettings(); paintPill();
+});
+document.getElementById('segTr').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  settings.transition = b.dataset.tr; saveStore(); paintSettings();
+});
+document.getElementById('segAuto').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  settings.auto = b.dataset.auto === '1'; saveStore(); noteActivity(); paintSettings(); paintPill();
+});
+document.getElementById('btnAuto').addEventListener('click', function () {
+  settings.auto = !settings.auto; saveStore(); noteActivity(); paintSettings(); paintPill();
+  showHint(settings.auto ? 'Автосмена включена: минута тишины — и новый облик.' : 'Автосмена выключена. Облик можно выбрать вручную.', 3200);
+});
+document.getElementById('btnNext').addEventListener('click', function () { manualNext(); });
+
+document.getElementById('btnLink').addEventListener('click', function () {
+  if (!cur) return;
+  var url = location.origin + location.pathname + '?skin=' + cur.skin.id;
+  var done = function () { showHint('Ссылка скопирована: закрепит облик №' + cur.skin.num + ' при открытии.', 3600); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done, function () { showHint(url, 6000); });
+  } else {
+    showHint(url, 6000);
+  }
+});
+
+function paintSettings() {
+  Array.prototype.forEach.call(document.querySelectorAll('#segInt button'), function (b) {
+    b.classList.toggle('is-on', +b.dataset.int === settings.interval);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#segTr button'), function (b) {
+    b.classList.toggle('is-on', b.dataset.tr === settings.transition);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#segAuto button'), function (b) {
+    b.classList.toggle('is-on', (b.dataset.auto === '1') === settings.auto);
+  });
+  document.getElementById('btnAuto').classList.toggle('is-on', settings.auto);
+}
+
+/* ============================================================
+   7. ТАЙМЕР И ПОДСКАЗКИ
+   ============================================================ */
+function noteActivity() {
+  lastActivity = Date.now();
+  if (!booted) booted = true;
+  chrome.classList.remove('is-idle');
+  clearTimeout(idleT);
+  idleT = setTimeout(function () { chrome.classList.add('is-idle'); }, 6000);
+}
+var idleT = null;
+
+function eligible() {
+  if (!cur || busy || !settings.auto) return false;
+  if (document.hidden) return false;
+  if (live.overlay) return false;
+  var h = (live.hash || '#home').replace('#', '');
+  return h === '' || h === 'home';
+}
+
+function remaining() {
+  return Math.max(0, settings.interval * 1000 - (Date.now() - lastActivity));
+}
+
+function paintPill() {
+  if (!cur) return;
+  var s = cur.skin;
+  var lnk = document.getElementById('lnkStandalone');
+  if (lnk) lnk.href = s.file;
+  document.documentElement.style.setProperty('--accent', s.accent);
+  pillNum.textContent = s.num;
+  pillName.textContent = '№' + s.num + ' · ' + s.name;
+  ring.classList.toggle('is-paused', !settings.auto || !eligible());
+
+  var h = (live.hash || '#home').replace('#', '');
+  var inSection = h && h !== 'home';
+  var r = remaining();
+  var secs = Math.ceil(r / 1000);
+  var clock = Math.floor(secs / 60) + ':' + String(secs % 60).padStart(2, '0');
+
+  if (!settings.auto) {
+    pillNext.innerHTML = 'автосмена выключена · <em>выбрать облик</em>';
+  } else if (inSection) {
+    pillNext.innerHTML = 'пауза — раздел «' + (HASH_LABEL[h] || h) + '» · <em>на главную</em>';
+    pillNext.title = 'Смена облика идёт только на главной — нажмите, чтобы вернуться';
+  } else if (live.overlay) {
+    pillNext.innerHTML = 'пауза — открыта корзина или меню';
+  } else if (nextSkin) {
+    pillNext.innerHTML = 'далее — №' + nextSkin.num + ' «' + nextSkin.name + '» · ' + clock;
+  } else {
+    pillNext.innerHTML = 'смена через ' + clock;
+  }
+
+  var frac = Math.min(1, r / (settings.interval * 1000));
+  ringVal.style.strokeDashoffset = (RING_C * frac).toFixed(2);
+  ringVal.style.stroke = settings.auto && eligible() ? s.accent : 'rgba(255,255,255,.28)';
+}
+
+var hintT = null;
+function showHint(text, ms) {
+  hintText.innerHTML = text;
+  hint.classList.add('is-on');
+  clearTimeout(hintT);
+  hintT = setTimeout(function () { hint.classList.remove('is-on'); }, ms || 5200);
+}
+
+/* ============================================================
+   8. ПЕРЕХОДЫ
+   ============================================================ */
+function pickTransition() {
+  if (reduced) return 'fade';
+  if (settings.transition !== 'auto') return settings.transition === 'mix' ? 'mix' : settings.transition;
+  var pool = ['veil', 'fade', 'slide', 'mix'];
+  var t = pool[trIndex % pool.length];
+  trIndex++;
+  return t;
+}
+
+function makeVeil(skin) {
+  veil.style.setProperty('--veil-bg', skin.bg);
+  veil.style.setProperty('--veil-accent', skin.accent);
+  veil.style.setProperty('--veil-ink', skin.dark ? '#f6f2ec' : '#14120f');
+  document.getElementById('veilNum').textContent = '№' + skin.num;
+  document.getElementById('veilName').textContent = skin.name;
+}
+
+function anim(el, frames, opts) {
+  var a = el.animate(frames, Object.assign({ fill: 'both' }, opts || {}));
+  return a.finished.catch(function () {});
+}
+
+function raf() { return new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); }); }
+
+/* 8.1 шторка */
+async function tVeil(inc, out) {
+  makeVeil(inc.skin);
+  veil.style.transform = 'translateX(-104%)';
+  await anim(veil, [{ transform: 'translateX(-104%)' }, { transform: 'translateX(0)' }],
+    { duration: 500, easing: 'cubic-bezier(.76,0,.24,1)' });
+  veil.style.transform = 'translateX(0)';
+  /* экран уже закрыт — даём медленному облику догрузиться под занавесом */
+  await whenReady(inc, 6000);
+  await raf();
+  await reveal(inc, out);
+  await anim(veil, [{ transform: 'translateX(0)' }, { transform: 'translateX(104%)' }],
+    { duration: 620, easing: 'cubic-bezier(.76,0,.24,1)' });
+  veil.style.transform = 'translateX(-104%)';
+}
+
+/* 8.2 растворение с размытием */
+async function tFade(inc, out) {
+  inc.el.classList.add('is-incoming');
+  inc.el.style.zIndex = '3';
+  out.el.style.zIndex = '2';
+  var a = anim(inc.el, [
+    { opacity: 0, transform: 'scale(1.02)', filter: 'blur(10px)' },
+    { opacity: 1, transform: 'scale(1)', filter: 'blur(0px)' }
+  ], { duration: 820, easing: 'cubic-bezier(.3,0,.2,1)' });
+  var b = anim(out.el, [
+    { opacity: 1, transform: 'scale(1)', filter: 'blur(0px)' },
+    { opacity: 0, transform: 'scale(.985)', filter: 'blur(8px)' }
+  ], { duration: 560, easing: 'cubic-bezier(.4,0,.3,1)' });
+  await Promise.all([a, b]);
+  inc.el.style.filter = '';
+  inc.el.style.transform = '';
+  await settle(inc, out);
+}
+
+/* 8.3 слайд секциями */
+async function tSlide(inc, out) {
+  inc.el.classList.add('is-incoming');
+  inc.el.style.zIndex = '3';
+  var a = anim(inc.el, [
+    { clipPath: 'inset(100% 0 0 0)', transform: 'translateY(24px)' },
+    { clipPath: 'inset(0% 0 0 0)', transform: 'translateY(0)' }
+  ], { duration: 780, easing: 'cubic-bezier(.66,0,.16,1)' });
+  var b = anim(out.el, [
+    { transform: 'translateY(0) scale(1)', opacity: 1 },
+    { transform: 'translateY(-7%) scale(.98)', opacity: .45 }
+  ], { duration: 780, easing: 'cubic-bezier(.66,0,.16,1)' });
+  await Promise.all([a, b]);
+  inc.el.style.clipPath = '';
+  inc.el.style.transform = '';
+  await settle(inc, out);
+}
+
+/* 8.4 микс: цветная вспышка + шторка + каскад блоков */
+async function tMix(inc, out) {
+  glow.style.setProperty('--glow-c', inc.skin.accent);
+  var g = anim(glow, [{ opacity: 0 }, { opacity: .85 }, { opacity: 0 }], { duration: 1100, easing: 'ease-in-out' });
+  makeVeil(inc.skin);
+  veil.style.transform = 'translateX(-104%)';
+  await anim(veil, [{ transform: 'translateX(-104%)' }, { transform: 'translateX(0)' }],
+    { duration: 430, easing: 'cubic-bezier(.76,0,.24,1)' });
+  veil.style.transform = 'translateX(0)';
+  await whenReady(inc, 6000);
+  await raf();
+  await reveal(inc, out);
+  post(inc, { __ciCmd: 'enter' });          // каскад: блоки проявляются по очереди
+  await anim(veil, [
+    { transform: 'translateX(0)', opacity: 1 },
+    { transform: 'translateX(104%)', opacity: 1 }
+  ], { duration: 700, easing: 'cubic-bezier(.76,0,.24,1)' });
+  veil.style.transform = 'translateX(-104%)';
+  await g;
+}
+
+/* показать входящий облик: снять «спящий» режим, включить поверх */
+async function reveal(inc, out) {
+  inc.el.classList.remove('is-preload');
+  inc.el.classList.add('is-incoming');
+  inc.el.style.visibility = 'visible';
+  inc.el.style.opacity = '1';
+  post(inc, { __ciCmd: 'wake' });
+  await raf();
+}
+
+/* убрать старый облик, привести классы в порядок */
+async function settle(inc, out) {
+  cur = inc;
+  inc.el.classList.remove('is-incoming');
+  inc.el.classList.add('is-current');
+  inc.el.style.zIndex = '';
+  inc.el.style.opacity = '';
+  inc.el.style.visibility = '';
+  if (out && out !== inc) destroyView(out);
+  live.hash = inc.meta.hash;
+  live.y = inc.meta.y;
+  live.max = inc.meta.max;
+  live.overlay = false;
+  paintSwatches();
+  paintPill();
+}
+
+/* ============================================================
+   9. СМЕНА ОБЛИКА
+   ============================================================ */
+function chooseNext() {
+  var pool = SKINS.filter(function (s) { return !cur || s.id !== cur.skin.id; });
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function preloadNext() {
+  if (!nextSkin || busy) return;
+  if (preload && preload.skin.id === nextSkin.id) return;
+  if (preload) { destroyView(preload); preload = null; }
+  preload = makeView(nextSkin);
+  whenReady(preload, 20000).then(function () {
+    if (preload && preload.skin.id !== nextSkin.id) { destroyView(preload); preload = null; }
+    else if (preload) { post(preload, { __ciCmd: 'sleep' }); sweep([cur]); }
+  });
+}
+
+function transferState(fromView, toView) {
+  var hash = (fromView && fromView.meta.hash) || '#home';
+  var ratio = fromView ? Math.min(1, (fromView.meta.y || 0) / Math.max(1, fromView.meta.max || 1)) : 0;
+  post(toView, { __ciCmd: 'hash', hash: hash });
+  post(toView, { __ciCmd: 'sleep' });
+  setTimeout(function () {
+    post(toView, { __ciCmd: 'scroll', ratio: ratio });
+  }, 60);
+}
+
+async function switchTo(skin, opts) {
+  opts = opts || {};
+  if (busy) { pendingPick = skin; return; }
+  if (!skin) return;
+  if (cur && cur.skin.id === skin.id && !opts.force) return;
+
+  busy = true;
+  ring.classList.add('is-paused');
+  var out = cur;
+
+  var inc = (preload && preload.skin.id === skin.id) ? preload : makeView(skin);
+  if (inc === preload) preload = null;
+
+  inc.el.classList.add('is-preload');
+  transferState(out, inc);
+  await raf();
+
+  var type = pickTransition();
+  /* «тает» и «слайд» требуют готового облика. Если он ещё грузится —
+     закрываем экран шторкой и догружаем под ней: так не бывает пустоты. */
+  if (type !== 'veil' && type !== 'mix') {
+    var fast = await readyWithin(inc, 700);
+    if (!fast) type = reduced ? 'fade' : 'veil';
+  }
+  trHistory.push(type);
+  try {
+    if (type === 'veil') await tVeil(inc, out);
+    else if (type === 'slide') await tSlide(inc, out);
+    else if (type === 'mix') await tMix(inc, out);
+    else await tFade(inc, out);
+  } catch (err) {
+    /* если анимация сорвалась — просто показываем новый облик без эффектов */
+    inc.el.classList.remove('is-preload');
+    inc.el.style.cssText = '';
+    await settle(inc, out);
+  }
+
+  if (type !== 'fade' && type !== 'veil') post(inc, { __ciCmd: 'enter' });
+
+  cur = inc;
+  settings.skin = skin.id;
+  saveStore();
+  document.title = 'ver. 1.1.0 · coffeeIT — ' + skin.name;
+
+  nextSkin = chooseNext();
+  busy = false;
+  lastActivity = Date.now();
+  paintSwatches();
+  paintSettings();
+  paintPill();
+  preloadNext();
+
+  if (opts.hint) showHint(opts.hint, 5200);
+
+  sweep([cur]);
+
+  if (pendingPick) {
+    var p = pendingPick; pendingPick = null;
+    if (!p || !cur || p.id !== cur.skin.id) switchTo(p, {});
+  }
+}
+
+function manualNext() {
+  if (busy) return;
+  noteActivity();
+  var skin = nextSkin || chooseNext();
+  switchTo(skin, { hint: 'Облик сменили вручную. Через минуту тишины — снова сам.' });
+}
+
+function userPick(id) {
+  var skin = BY_ID[id];
+  if (!skin) return;
+  noteActivity();
+  if (cur && cur.skin.id === id) return;
+  switchTo(skin, { hint: 'Облик закреплён: №' + skin.num + ' «' + skin.name + '».' });
+}
+
+/* ============================================================
+   10. ЦИКЛ
+   ============================================================ */
+function tick() {
+  paintPill();
+
+  /* если сменили раздел — таймер просто замирает, но при возврате на главную
+     любое действие уже сбросило его; подскажем, почему пауза */
+  if (settings.auto && !busy && !eligible()) {
+    if (live.overlay) {
+      /* корзина/меню — молчим, это очевидно */
+    }
+  }
+
+  if (eligible()) {
+    var r = remaining();
+    if (r < 17000 && nextSkin) preloadNext();
+    if (r <= 0) {
+      var skin = nextSkin || chooseNext();
+      switchTo(skin);
+    }
+  } else if (!nextSkin && cur) {
+    nextSkin = chooseNext();
+  }
+}
+
+/* ============================================================
+   11. СОБЫТИЯ
+   ============================================================ */
+['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart', 'input', 'scroll'].forEach(function (t) {
+  window.addEventListener(t, function (e) {
+    if (e && e.target && e.target.closest && e.target.closest('#chrome,#panel')) return;
+    noteActivity();
+  }, { passive: true, capture: true });
+});
+
+document.addEventListener('visibilitychange', function () {
+  if (!document.hidden) noteActivity();
+});
+
+document.addEventListener('keydown', function (e) {
+  var tag = e.target && e.target.matches ? e.target : null;
+  if (tag && e.target.matches('input,textarea,select')) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); manualNext(); }
+  else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    var idx = SKINS.findIndex(function (s) { return cur && s.id === cur.skin.id; });
+    var prev = SKINS[(idx - 1 + SKINS.length) % SKINS.length];
+    userPick(prev.id);
+  }
+  else if (e.key === 'Escape') closePanel();
+  else if (e.key === ' ') { e.preventDefault(); document.getElementById('btnAuto').click(); }
+});
+
+/* клик по подписи «пауза — раздел ...» возвращает на главную */
+document.getElementById('pillNext').addEventListener('click', function () {
+  if (cur && live.hash && live.hash !== '#home') post(cur, { __ciCmd: 'hash', hash: '#home' });
+  noteActivity();
+});
+document.getElementById('pillNext').style.cursor = 'pointer';
+
+/* ============================================================
+   12. СТАРТ
+   ============================================================ */
+function boot() {
+  buildSwatches();
+  buildList();
+  paintSettings();
+
+  var start = settings.skin ? BY_ID[settings.skin] : SKINS[Math.floor(Math.random() * SKINS.length)];
+
+  /* первый облик показываем сразу — не ждём полной загрузки документа,
+     иначе заставка висела бы на медленной сети */
+  var view = makeView(start);
+  view.el.classList.remove('is-preload');
+  view.el.classList.add('is-current');
+  view.el.style.visibility = 'visible';
+  cur = view;
+
+  document.title = 'ver. 1.1.0 · coffeeIT — ' + start.name;
+  lastActivity = Date.now();
+  nextSkin = chooseNext();
+  paintSwatches();
+  paintPill();
+
+  post(view, { __ciCmd: 'wake' });
+  paintPill();
+  /* предзагрузку начинаем чуть позже — чтобы первый экран появился мгновенно */
+  setTimeout(preloadNext, 1200);
+
+  /* заставка уходит коротким «выдохом» */
+  setTimeout(function () {
+    document.getElementById('splash').classList.add('is-off');
+    if (settings.auto) {
+      showHint('Это <b>один сайт</b> с восемью обликами. Через минуту тишины он сменится сам — плавно.', 7000);
+    }
+  }, 420);
+}
+
+setInterval(tick, 250);
+boot();
+</script>
 </body>
 </html>
