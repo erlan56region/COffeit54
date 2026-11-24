@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ver. 1.1.0 · coffeeIT — Build & Brew</title>
+<title>ver. 1.2.1 · coffeeIT — Build & Brew</title>
 <meta name="description" content="Корпоративный кейс-сайт: серо-стальной, двухколоночный, с таблицами и пакетами.">
 <meta name="theme-color" content="#16130f">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%2316130f'/%3E%3Cpath d='M14 18h16v10a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18Z' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3Cpath d='M30 21h3a3.5 3.5 0 0 1 0 7h-3' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3C/svg%3E">
@@ -2164,6 +2164,85 @@ window.CI_DATA = {
 
 </script>
 <!-- ci-bridge:start -->
+<style id="ci-mobile-css">
+/* ================= coffeeIT · мобильные исправления ================= */
+:root{ --ci-shell-bottom: 0px; }
+
+/* 1. iOS Safari и Android Chrome прячут адресную строку — 100vh «прыгает».
+      Берём dvh там, где он есть, иначе оставляем прежнее поведение. */
+@supports (height: 100dvh){
+  .mobile-menu, .cart-drawer, .v5-snow{ max-height: 100dvh; }
+}
+
+/* 2. Сенсорный экран: hover «залипает» после тапа — отключаем подъёмы,
+      а кнопки доводим до комфортных 44 px (Apple HIG / Material). */
+@media (hover: none), (pointer: coarse){
+  .btn:hover, .chip:hover, .card:hover, .product:hover, .case:hover,
+  .sp-tier:hover, .v1-row:hover, .v6-proj:hover, .v7-proj:hover,
+  .cart-fab:hover, .icon-btn:hover, .tier:hover{ transform: none; }
+  .cart-fab{ width: 56px; height: 56px; }
+  .icon-btn{ min-width: 44px; min-height: 44px; }
+  .burger{ min-width: 44px; min-height: 44px; }
+  .qty button{ min-width: 40px; min-height: 40px; }
+  .chip, .tab, .seg button, .v4-tabs button{ min-height: 40px; }
+  .mobile-menu a{ padding: 12px 4px; }
+  .close-btn, [data-cart-close]{ min-width: 44px; min-height: 44px; }
+}
+
+/* 3. Поля ввода 16 px: иначе iOS зумит страницу при фокусе. */
+@media (hover: none), (pointer: coarse){
+  .cart-form input, .cart-form textarea, .cart-form select,
+  .lead-form input, .lead-form textarea, .lead-form select,
+  .v6-form input, .v6-form textarea, .v6-form select,
+  .v6-cta input, .v7-form input, .v7-form textarea,
+  .v5-form input, .v5-form textarea, .v5-form select,
+  .v1-form input, .v1-form textarea, .v1-form select,
+  .v4-form input, .v4-form textarea,
+  .booking input, .booking select, .booking textarea,
+  input, textarea, select{ font-size: 16px; }
+}
+
+/* 4. Вырезы экрана и «желоба»: ничего не прячем под чёлкой и полосой жестов. */
+@supports (padding: env(safe-area-inset-bottom)){
+  .cart-drawer{ padding-bottom: env(safe-area-inset-bottom); }
+  .mobile-menu{ padding-bottom: max(24px, calc(24px + env(safe-area-inset-bottom))); }
+  .toast{ bottom: max(26px, calc(26px + env(safe-area-inset-bottom))); }
+  .cart-fab{ right: max(16px, calc(16px + env(safe-area-inset-right)));
+             bottom: max(16px, calc(16px + env(safe-area-inset-bottom))); }
+}
+
+/* 5. Оболочка сообщает свою высоту — поднимаем плавающие элементы.
+      В отдельной странице переменная = 0, и ничего не меняется. */
+.cart-fab{ bottom: calc(max(16px, 16px + env(safe-area-inset-bottom)) + var(--ci-shell-bottom, 0px)); }
+.toast{ bottom: calc(max(26px, 26px + env(safe-area-inset-bottom)) + var(--ci-shell-bottom, 0px)); }
+@media (max-width: 860px){
+  .toast{ bottom: calc(max(88px, 88px + env(safe-area-inset-bottom)) + var(--ci-shell-bottom, 0px)); }
+}
+
+/* 6. Очень узкие экраны (iPhone SE 320 px, старые Android). */
+@media (max-width: 380px){
+  .wrap{ padding-left: 14px; padding-right: 14px; }
+  .cart-drawer{ width: 100%; }
+  .btn{ padding-left: 14px; padding-right: 14px; }
+  .product-grid, .case-grid, .service-grid, .v1-cases, .v1-vendors,
+  .v5-vendors, .v5-zones, .sp-tiers{ grid-template-columns: minmax(0, 1fr); }
+  h1{ font-size: clamp(26px, 8.4vw, 40px); }
+}
+
+/* 7. Ландшафт на телефоне: не отдаём пол-экрана шапке. */
+@media (max-height: 520px) and (orientation: landscape){
+  .cart-drawer{ width: min(420px, 78vw); }
+  .mobile-menu{ padding-top: 12px; }
+  .hero, .v1-hero, .v6-hero, .v7-hero{ min-height: auto; }
+}
+
+/* 8. Уважение к системным настройкам движения. */
+@media (prefers-reduced-motion: reduce){
+  .mq-inner{ animation: none !important; }
+  .cart-drawer, .mobile-menu{ transition-duration: .01ms !important; }
+}
+/* ================= /мобильные исправления ================= */
+</style>
 <script>
 /* ============================================================
    coffeeIT · activity bridge
@@ -2329,6 +2408,63 @@ window.CI_DATA = {
   send('ready');
   document.addEventListener('DOMContentLoaded', function () { send('ready'); });
   window.addEventListener('load', function () { send('ready'); });
+})();
+</script>
+<script>
+/* ============================================================
+   coffeeIT · мобильные исправления (общая часть для всех обликов)
+
+   Здесь то, что нельзя выразить в CSS без дублей и что нужно
+   всем восьми вариантам одинаково:
+
+     1) «мостик» получает размеры вьюпорта и высоту пульта оболочки,
+        чтобы поднимать корзину, меню и тосты над пультом;
+     2) если облик открыт отдельной страницей (без оболочки),
+        оформление берётся из системных настроек устройства.
+   ============================================================ */
+(function () {
+  if (window.__ciMobileFix) return;
+  window.__ciMobileFix = true;
+
+  var inShell = false;
+  try { inShell = window.parent && window.parent !== window; } catch (e) { inShell = false; }
+
+  function announceSize() {
+    var h = window.innerHeight || 0;
+    try {
+      parent.postMessage({
+        __ci: 1, type: 'size', variant: document.documentElement.getAttribute('data-variant') || 'page',
+        vw: window.innerWidth || 0, vh: h,
+        safe: 0
+      }, '*');
+    } catch (e) {}
+  }
+
+  var t = null;
+  function onResize() {
+    clearTimeout(t);
+    t = setTimeout(announceSize, 180);
+  }
+  window.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', onResize);
+  announceSize();
+
+  window.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (!d.__ciShell) return;
+    /* оболочка сообщает, сколько занимает нижний пульт — сдвигаем свои элементы */
+    var pad = Math.max(0, Math.min(260, Number(d.chrome) || 0));
+    document.documentElement.style.setProperty('--ci-shell-bottom', pad + 'px');
+    if (typeof d.vh === 'number' && d.vh > 0) {
+      document.documentElement.style.setProperty('--ci-vh', d.vh + 'px');
+    }
+  });
+
+  /* отдельная страница: уважаем системную тёмную тему */
+  if (!inShell && window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    try { document.documentElement.setAttribute('data-ci-scheme', mq.matches ? 'dark' : 'light'); } catch (e) {}
+  }
 })();
 </script>
 <!-- ci-bridge:end -->

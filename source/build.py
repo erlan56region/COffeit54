@@ -5,7 +5,7 @@ import pathlib, re, sys, json, base64
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
 OUT = ROOT / "coffeeit"
-VERSION = "1.1.0"
+VERSION = "1.2.1"
 
 TITLES = {
     "v1": ("coffeeIT — Код и зерно", "Одна команда: разработка, серверы и кофе. Редакционный премиум-стиль."),

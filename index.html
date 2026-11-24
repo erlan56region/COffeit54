@@ -2,8 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ver. 1.1.0 · coffeeIT — один сайт, восемь обликов</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark">
+<title>ver. 1.2.1 · coffeeIT — один сайт, восемь обликов</title>
 <meta name="description" content="coffeeIT — один сайт, который сам меняет облик: восемь дизайнов, плавные переходы через минуту бездействия.">
 <meta name="theme-color" content="#0c0c0e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230c0c0e'/%3E%3Cpath d='M14 18h16v10a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18Z' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3Cpath d='M30 21h3a3.5 3.5 0 0 1 0 7h-3' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3C/svg%3E">
@@ -38,7 +43,8 @@ svg{display:block}
 ::selection{background:var(--accent);color:#0c0c0e}
 
 /* ---------- сцена ---------- */
-#stage{position:fixed;inset:0;background:#0c0c0e;isolation:isolate}
+#stage{position:fixed;inset:0;background:#0c0c0e;isolation:isolate;height:100%}
+@supports (height: 100dvh){#stage{height:100dvh}}
 .frame{position:absolute;inset:0;overflow:hidden;background:#0c0c0e;will-change:transform,opacity,clip-path}
 .frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
 .frame.is-preload{visibility:hidden;pointer-events:none;z-index:0}
@@ -145,6 +151,116 @@ svg{display:block}
 }
 .sw:hover::after{opacity:1;transform:translate(-50%,0)}
 
+/* ---------- музыка (левая панель) ---------- */
+#musicTab{
+  position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:54;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:14px 9px;border-radius:0 14px 14px 0;
+  background:var(--glass-2);border:1px solid var(--stroke);border-left:0;
+  box-shadow:14px 0 34px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);
+  color:var(--ink);transition:transform .3s var(--ease),opacity .3s var(--ease);
+}
+#musicTab:hover{transform:translateY(-50%) translateX(2px)}
+#musicTab .mt-ico{width:20px;height:20px}
+#musicTab .mt-label{
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);
+}
+#musicTab .mt-eq{display:flex;align-items:flex-end;gap:2px;height:16px}
+#musicTab .mt-eq i{width:2px;height:4px;border-radius:2px;background:var(--accent);opacity:.7}
+#musicTab.is-playing .mt-eq i{animation:eqBar .9s ease-in-out infinite}
+#musicTab.is-playing .mt-eq i:nth-child(2){animation-delay:.18s}
+#musicTab.is-playing .mt-eq i:nth-child(3){animation-delay:.36s}
+#musicTab.is-playing .mt-eq i:nth-child(4){animation-delay:.54s}
+@keyframes eqBar{0%,100%{height:4px;opacity:.5}50%{height:14px;opacity:1}}
+#musicTab .mt-dot{position:absolute;top:8px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--accent);display:none}
+#musicTab.is-on .mt-dot{display:block}
+@media (max-width:860px){
+  #music{width:min(360px,92vw);top:0;bottom:0;border-radius:0 16px 16px 0}
+  /* на телефоне — компактный круглый ярлык по центру слева:
+     полоса обликов получает всю ширину и все восемь точек видны без скролла */
+  #musicTab{
+    top:50%;bottom:auto;transform:translateY(-50%);
+    flex-direction:column;gap:4px;padding:9px 7px;border-radius:0 14px 14px 0;
+    border-left:0;opacity:.94;
+  }
+  #musicTab:hover{transform:translateY(-50%)}
+  #musicTab .mt-ico{width:18px;height:18px}
+  #musicTab .mt-label{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:9.5px}
+  #musicTab .mt-eq{height:12px}
+  #musicTab .mt-eq i{width:2px}
+}
+
+#music{
+  position:fixed;left:0;top:0;bottom:0;z-index:58;
+  width:min(344px,88vw);
+  display:flex;flex-direction:column;
+  background:var(--glass-2);border-right:1px solid var(--stroke);
+  box-shadow:30px 0 90px rgba(0,0,0,.5);
+  backdrop-filter:blur(26px) saturate(1.5);-webkit-backdrop-filter:blur(26px) saturate(1.5);
+  transform:translateX(-104%);visibility:hidden;
+  transition:transform .36s var(--ease),visibility .36s;
+}
+#music.is-open{transform:none;visibility:visible}
+.m-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 16px 10px}
+.m-head h2{margin:0;font-size:14.5px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.m-head h2 .ym{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:#0c0c0e;background:#ffdb4d;border-radius:999px;padding:3px 8px}
+.m-head p{margin:5px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink-dim);max-width:30ch}
+.m-body{flex:1;overflow:auto;padding:4px 16px 18px;display:grid;gap:12px;align-content:start}
+.m-body::-webkit-scrollbar{width:8px}
+.m-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:8px}
+.m-card{display:grid;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid var(--stroke-soft)}
+.m-card h3{margin:0;font-size:12px;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:7px}
+.m-card h3 svg{width:14px;height:14px;opacity:.7}
+.m-note{margin:0;font-size:11px;line-height:1.5;color:var(--ink-dim)}
+.m-note b{color:var(--ink);font-weight:600}
+.m-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.m-input{
+  flex:1;min-width:0;padding:9px 11px;border-radius:9px;
+  background:rgba(0,0,0,.28);border:1px solid var(--stroke);color:var(--ink);
+  font:inherit;font-size:12px;outline:none;transition:border-color .18s,background .18s;
+}
+.m-input::placeholder{color:rgba(244,240,234,.38)}
+.m-input:focus{border-color:rgba(255,255,255,.3);background:rgba(0,0,0,.4)}
+.m-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:9px 13px;border-radius:9px;font-size:12px;font-weight:600;
+  background:rgba(255,255,255,.1);border:1px solid var(--stroke);color:var(--ink);
+  transition:background .18s,border-color .18s,transform .18s;white-space:nowrap;
+}
+.m-btn:hover{background:rgba(255,255,255,.16)}
+.m-btn:active{transform:scale(.97)}
+.m-btn svg{width:14px;height:14px;flex:none}
+.m-btn-primary{background:#ffdb4d;border-color:#ffdb4d;color:#0c0c0e}
+.m-btn-primary:hover{background:#ffe270}
+.m-btn-ghost{background:transparent}
+.m-btn-block{width:100%}
+.m-user{display:flex;align-items:center;gap:10px}
+.m-ava{width:38px;height:38px;border-radius:50%;flex:none;object-fit:cover;background:rgba(255,255,255,.1);
+  border:1px solid var(--stroke);display:grid;place-items:center;font-size:13px;font-weight:600}
+.m-user .who{display:grid;gap:1px;min-width:0}
+.m-user .who b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-user .who span{font-size:11px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-quick{display:grid;gap:6px}
+.m-quick button{
+  display:flex;align-items:center;gap:8px;justify-content:flex-start;
+  padding:8px 10px;border-radius:9px;font-size:11.5px;color:var(--ink-dim);
+  border:1px solid var(--stroke-soft);background:rgba(255,255,255,.03);text-align:left;transition:.16s;
+}
+.m-quick button:hover{color:var(--ink);background:rgba(255,255,255,.08);border-color:var(--stroke)}
+.m-quick button svg{width:13px;height:13px;flex:none;opacity:.8}
+.m-player{border-radius:14px;overflow:hidden;border:1px solid var(--stroke-soft);background:#111;min-height:180px;position:relative}
+.m-player iframe{display:block;width:100%;height:180px;border:0;background:#111}
+.m-player .m-empty{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;padding:16px;background:rgba(10,10,12,.92)}
+.m-player .m-empty b{font-size:12px}
+.m-player .m-empty span{font-size:11px;color:var(--ink-dim);max-width:24ch;line-height:1.45}
+.m-foot{padding:10px 16px 14px;border-top:1px solid var(--stroke-soft);font-size:10.5px;line-height:1.5;color:var(--ink-dim)}
+.m-foot kbd{font:inherit;font-size:10px;background:rgba(255,255,255,.09);border-radius:4px;padding:1px 5px}
+.m-sep{height:1px;background:var(--stroke-soft);margin:2px 0}
+.m-badge{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--stroke-soft);border-radius:999px;padding:2px 7px}
+
 /* ---------- панель «все облики» ---------- */
 #panel{
   position:fixed;left:clamp(12px,2.2vw,26px);bottom:calc(var(--chrome-h) + 36px);z-index:55;
@@ -217,7 +333,7 @@ svg{display:block}
   #pill .meta b{font-size:12.5px}
   #pill .meta span{font-size:11px}
   .ring{width:40px;height:40px}
-  #panel{left:10px;right:10px;width:auto;bottom:126px;max-height:60vh}
+  #panel{left:10px;right:10px;width:auto;bottom:126px;max-height:56vh}
   #hint{bottom:128px;font-size:12px}
   .sw{width:28px;height:28px}
   #chrome.is-idle{opacity:.75}
@@ -227,7 +343,64 @@ svg{display:block}
   #pill .meta span{max-width:42vw}
 }
 
+/* iPhone SE (320–375), узкие Android */
+@media (max-width:380px){
+  #chrome{padding:0 8px calc(8px + env(safe-area-inset-bottom))}
+  #pill{gap:8px;padding:7px 9px 7px 7px}
+  #pill .meta b{font-size:12px}
+  #pill .meta span{font-size:10.5px;max-width:36vw}
+  .ring{width:38px;height:38px}
+  .ring .num{font-size:12px}
+  .sw{width:32px;height:32px;font-size:10.5px;border-radius:9px}
+  #swatches{padding:5px}
+  #panel{left:8px;right:8px;bottom:120px;max-height:52vh;border-radius:16px}
+  .p-head{padding:14px 14px 10px}
+  .p-set{padding:12px 14px 14px}
+  .seg{flex-wrap:wrap}
+  #music{width:100vw;border-radius:0}
+  .m-body{padding:4px 12px 14px}
+  .m-player iframe{height:152px}
+  #hint{font-size:11.5px;padding:10px 13px}
+}
+
+/* низкий ландшафт (телефон повёрнут) */
+@media (max-height:520px) and (orientation:landscape){
+  #chrome{padding:0 10px 8px}
+  #swatches{padding:5px;padding-left:auto}
+  #panel{bottom:104px;max-height:78vh}
+  #music{width:min(420px,60vw)}
+  #musicTab{padding:7px 6px}
+  .m-player iframe{height:140px}
+  #music .m-head p{display:none}
+}
+
+/* вырезы: панель и пульт не прячутся под «челкой» */
+@supports (padding: env(safe-area-inset-left)){
+  #chrome{padding-left:max(clamp(12px,2.2vw,26px), env(safe-area-inset-left));
+          padding-right:max(clamp(12px,2.2vw,26px), env(safe-area-inset-right))}
+  #musicTab{padding-left:max(9px, env(safe-area-inset-left))}
+}
+
 /* ---------- уважение к настройкам системы ---------- */
+/* ---------- телефоны: тач-таргеты и «залипающий» hover ---------- */
+@media (hover: none), (pointer: coarse){
+  /* на сенсоре hover срабатывает «навсегда» — убираем подъёмы и подсветку */
+  .sw:hover,.card:hover,.skin:hover,.m-btn:hover,.btn-ic:hover,.p-links a:hover{transform:none}
+  .sw:hover{transform:none}
+  .btn-ic{width:42px;height:42px}
+  .btn-ic svg{width:19px;height:19px}
+  .sw{width:36px;height:36px;border-radius:11px;font-size:11.5px}
+  .skin{padding:11px 10px}
+  .seg button{padding:9px 12px;font-size:12.5px}
+  .p-links a,.p-links button{padding:10px 13px;font-size:12px}
+  #pillNext{padding:2px 0}
+  .m-btn{padding:12px 15px;font-size:13px}
+  .m-quick button{padding:11px 12px;font-size:12.5px}
+  .m-input{padding:12px 12px;font-size:16px}   /* 16px: iOS не зумит при фокусе */
+  .m-head p,.m-note{font-size:12px}
+  #musicTab{padding:16px 12px}
+}
+
 @media (prefers-reduced-motion: reduce){
   #veil{display:none}
   #splash svg,#splash .s-bar i{animation:none}
@@ -308,6 +481,132 @@ setTimeout(function () {
 
   <div id="swatches" role="tablist" aria-label="Облики сайта"></div>
 </div>
+
+<button id="musicTab" type="button" aria-controls="music" aria-expanded="false" title="Музыка — Яндекс Музыка">
+  <svg class="mt-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/>
+  </svg>
+  <span class="mt-label">музыка</span>
+  <span class="mt-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+</button>
+
+<aside id="music" aria-label="Музыка — Яндекс Музыка" aria-hidden="true">
+  <div class="m-head">
+    <div>
+      <h2>Музыка <span class="ym">Яндекс</span></h2>
+      <p>Слушайте прямо здесь: вошли в профиль — играет ваша библиотека.</p>
+    </div>
+    <button class="btn-ic" id="musicClose" aria-label="Закрыть музыку">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <div class="m-body">
+    <div class="m-card" id="mUserCard">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+        Ваш профиль
+      </h3>
+
+      <div id="mGuest">
+        <p class="m-note">Войдите через профиль Яндекса — подтянем имя и аватар, включим вашу музыку.</p>
+        <div class="m-row" style="margin-top:10px">
+          <button class="m-btn m-btn-primary m-btn-block" id="mLogin" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5"/><path d="M10 8l4 4-4 4"/><path d="M14 12H4"/></svg>
+            Войти через Яндекс
+          </button>
+        </div>
+        <p class="m-note" style="margin-top:8px">Откроется окно Яндекса. Пароль вводится только на его стороне — сайт его не видит.</p>
+      </div>
+
+      <div id="mLogged" hidden>
+        <div class="m-user">
+          <div class="m-ava" id="mAva">Я</div>
+          <div class="who">
+            <b id="mName">Пользователь</b>
+            <span id="mMail">профиль подключён</span>
+          </div>
+          <span class="m-badge" id="mState">в сети</span>
+        </div>
+        <div class="m-row" style="margin-top:12px">
+          <button class="m-btn m-btn-ghost" id="mLogout" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5"/><path d="M16 8l4 4-4 4"/><path d="M20 12H9"/></svg>
+            Выйти
+          </button>
+          <button class="m-btn m-btn-ghost" id="mToMusic" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+            Моя музыка
+          </button>
+        </div>
+        <p class="m-note" style="margin-top:10px" id="mProfileHint"></p>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+        Плейлист или трек
+      </h3>
+      <p class="m-note">Вставьте ссылку с Яндекс Музыки или готовый код <b>HTML-плеера</b> — включим его здесь.</p>
+      <div class="m-row" style="margin-top:10px">
+        <input class="m-input" id="mUrl" type="text" spellcheck="false" autocomplete="off"
+               placeholder="https://music.yandex.ru/album/…  или  &lt;iframe …&gt;">
+      </div>
+      <div class="m-row">
+        <button class="m-btn m-btn-primary" id="mPlay" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+          Включить
+        </button>
+        <button class="m-btn m-btn-ghost" id="mPause" type="button" title="Остановить и убрать плеер">
+          <svg viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg>
+          Стоп
+        </button>
+      </div>
+      <div class="m-sep"></div>
+      <div class="m-quick">
+        <button type="button" data-ym-preset="https://music.yandex.ru/iframe/#playlist/yandexmusic/1624">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h11M4 17h7"/></svg>
+          Плейлист «для кода» (демо)
+        </button>
+        <button type="button" data-ym-preset="https://music.yandex.ru/iframe/#track/71263/419460">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/></svg>
+          Один трек (демо)
+        </button>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8"/></svg>
+        Плеер
+      </h3>
+      <div class="m-player" id="mPlayer">
+        <div class="m-empty" id="mEmpty">
+          <b>Плеер ждёт ссылку</b>
+          <span>Вставьте адрес плейлиста или трека — Яндекс отрисует свой плеер.</span>
+        </div>
+      </div>
+      <p class="m-note" id="mNow">Ничего не играет.</p>
+    </div>
+
+    <div class="m-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+        Как это устроено
+      </h3>
+      <p class="m-note">
+        Плеер — официальный виджет Яндекс Музыки в рамке, поэтому воспроизведение и права остаются на стороне Яндекса.
+        Кнопка «Войти через Яндекс» запрашивает у вашего профиля только имя и аватар (права <b>login:info</b>, <b>login:avatar</b>) —
+        пароль сайт не получает и не хранит.
+      </p>
+      <p class="m-note" id="mSetup" hidden></p>
+    </div>
+  </div>
+
+  <div class="m-foot">
+    Горячие клавиши: <kbd>M</kbd> — открыть музыку, <kbd>Esc</kbd> — закрыть. Ссылка на плейлист запоминается на этом устройстве.
+  </div>
+</aside>
 
 <div id="panel" role="dialog" aria-modal="false" aria-labelledby="panelTitle">
   <div class="p-head">
@@ -547,6 +846,10 @@ window.addEventListener('message', function (e) {
       view.ready = true;
       view._resolve();
     }
+  }
+  if (d.type === 'size' && d.vh) {
+    /* запоминаем высоту вьюпорта облика — от неё считаем отступ пульта */
+    view.meta.vh = d.vh;
   }
   if (view !== cur) return;               // скрытый/предзагруженный облик не влияет на таймер
   live.hash = view.meta.hash;
@@ -926,7 +1229,7 @@ async function switchTo(skin, opts) {
   cur = inc;
   settings.skin = skin.id;
   saveStore();
-  document.title = 'ver. 1.1.0 · coffeeIT — ' + skin.name;
+  document.title = 'ver. 1.2.1 · coffeeIT — ' + skin.name;
 
   nextSkin = chooseNext();
   busy = false;
@@ -934,6 +1237,7 @@ async function switchTo(skin, opts) {
   paintSwatches();
   paintSettings();
   paintPill();
+  setTimeout(tellChromeHeight, 120);
   preloadNext();
 
   if (opts.hint) showHint(opts.hint, 5200);
@@ -960,6 +1264,16 @@ function userPick(id) {
   if (cur && cur.skin.id === id) return;
   switchTo(skin, { hint: 'Облик закреплён: №' + skin.num + ' «' + skin.name + '».' });
 }
+
+/* сообщаем текущему облику, сколько места занимает нижний пульт,
+   чтобы корзина, меню и тосты не прятались под ним на телефоне */
+function tellChromeHeight() {
+  if (!cur) return;
+  var h = Math.round(chrome.getBoundingClientRect().height || 0);
+  post(cur, { __ciShell: 1, chrome: h, vh: window.innerHeight });
+}
+window.addEventListener('resize', function () { setTimeout(tellChromeHeight, 160); });
+window.addEventListener('orientationchange', function () { setTimeout(tellChromeHeight, 260); });
 
 /* ============================================================
    10. ЦИКЛ
@@ -992,7 +1306,7 @@ function tick() {
    ============================================================ */
 ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart', 'input', 'scroll'].forEach(function (t) {
   window.addEventListener(t, function (e) {
-    if (e && e.target && e.target.closest && e.target.closest('#chrome,#panel')) return;
+    if (e && e.target && e.target.closest && e.target.closest('#chrome,#panel,#music')) return;
     noteActivity();
   }, { passive: true, capture: true });
 });
@@ -1011,7 +1325,11 @@ document.addEventListener('keydown', function (e) {
     var prev = SKINS[(idx - 1 + SKINS.length) % SKINS.length];
     userPick(prev.id);
   }
-  else if (e.key === 'Escape') closePanel();
+  else if (e.key === 'Escape') { closePanel(); closeMusic(); }
+  else if (e.key === 'm' || e.key === 'M' || e.key === 'ь' || e.key === 'Ь') {
+    e.preventDefault();
+    music.open ? closeMusic() : openMusic();
+  }
   else if (e.key === ' ') { e.preventDefault(); document.getElementById('btnAuto').click(); }
 });
 
@@ -1021,6 +1339,286 @@ document.getElementById('pillNext').addEventListener('click', function () {
   noteActivity();
 });
 document.getElementById('pillNext').style.cursor = 'pointer';
+
+/* ============================================================
+   13. МУЗЫКА · Яндекс Музыка
+   ------------------------------------------------------------
+   Две независимые части:
+
+   1) Профиль. Кнопка «Войти через Яндекс» уводит на oauth.yandex.ru,
+      возвращается токен в адресной строке (#access_token=…), затем
+      запрашиваем login.yandex.ru/info — имя и аватар. Нужен свой
+      client_id (и URI возврата) из oauth.yandex.ru; пока его нет,
+      показываем путь настройки, а не мнимый «вход».
+
+   2) Плеер. Официальный виджет Яндекс Музыки в iframe:
+      music.yandex.ru/iframe/#playlist/<владелец>/<номер>
+      music.yandex.ru/iframe/#track/<трек>/<альбом>
+      либо готовый <iframe> из меню «Поделиться → HTML-код».
+      Права и воспроизведение остаются на стороне Яндекса.
+   ============================================================ */
+var YM = {
+  clientId: '',                       // ← вставьте client_id своего приложения
+  redirectUri: location.origin + location.pathname,
+  scope: 'login:info login:avatar',
+  store: 'ci_music_v1'
+};
+
+var music = {
+  token: null,
+  user: null,
+  src: '',
+  open: false
+};
+
+var mPanel = document.getElementById('music');
+var mTab = document.getElementById('musicTab');
+var mPlayer = document.getElementById('mPlayer');
+var mEmpty = document.getElementById('mEmpty');
+var mNow = document.getElementById('mNow');
+var mUrl = document.getElementById('mUrl');
+var mGuest = document.getElementById('mGuest');
+var mLogged = document.getElementById('mLogged');
+var mName = document.getElementById('mName');
+var mMail = document.getElementById('mMail');
+var mAva = document.getElementById('mAva');
+var mSetup = document.getElementById('mSetup');
+var mProfileHint = document.getElementById('mProfileHint');
+
+function musicStore() {
+  try { return JSON.parse(localStorage.getItem(YM.store) || '{}') || {}; } catch (e) { return {}; }
+}
+function musicSave(patch) {
+  var d = musicStore();
+  Object.assign(d, patch || {});
+  try { localStorage.setItem(YM.store, JSON.stringify(d)); } catch (e) {}
+}
+
+/* ---------- 13.1 открыть/закрыть ---------- */
+function openMusic() {
+  music.open = true;
+  mPanel.classList.add('is-open');
+  mPanel.setAttribute('aria-hidden', 'false');
+  mTab.setAttribute('aria-expanded', 'true');
+  mTab.classList.add('is-on');
+  noteActivity();
+}
+function closeMusic() {
+  music.open = false;
+  mPanel.classList.remove('is-open');
+  mPanel.setAttribute('aria-hidden', 'true');
+  mTab.setAttribute('aria-expanded', 'false');
+  mTab.classList.remove('is-on');
+}
+mTab.addEventListener('click', function () { music.open ? closeMusic() : openMusic(); });
+document.getElementById('musicClose').addEventListener('click', closeMusic);
+
+/* ---------- 13.2 профиль ---------- */
+function setLoggedIn(user) {
+  music.user = user;
+  var label = user.name || user.login || 'Слушатель';
+  mName.textContent = label;
+  mMail.textContent = user.email || ('@' + (user.login || 'yandex'));
+  mAva.innerHTML = '';
+  if (user.avatar) {
+    var img = document.createElement('img');
+    img.src = user.avatar;
+    img.alt = '';
+    img.className = 'm-ava';
+    img.style.padding = '0';
+    mAva.replaceWith(img);
+    img.id = 'mAva';
+    mAva = img;
+  } else {
+    mAva.textContent = label.slice(0, 1).toUpperCase();
+  }
+  if (user.id) {
+    mProfileHint.innerHTML = 'Профиль подключён. <a class="m-btn m-btn-ghost" style="padding:0;border:0;background:none;text-decoration:underline;font-size:11px" href="https://music.yandex.ru/users/' + encodeURIComponent(user.login || '') + '/playlists" target="_blank" rel="noopener">Открыть мои плейлисты на Яндексе</a>';
+  }
+  mGuest.hidden = true;
+  mLogged.hidden = false;
+}
+
+function setLoggedOut() {
+  music.user = null;
+  music.token = null;
+  mGuest.hidden = false;
+  mLogged.hidden = true;
+}
+
+function showSetup() {
+  if (YM.clientId) return;
+  mSetup.hidden = false;
+  mSetup.innerHTML = 'Осталось указать приложение: получите <b>client_id</b> на ' +
+    '<a href="https://oauth.yandex.ru/client/new" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline">oauth.yandex.ru/client/new</a>, ' +
+    'включите права <b>login:info</b> и <b>login:avatar</b>, в поле Redirect URI укажите <b>' +
+    YM.redirectUri + '</b> — и впишите client_id в блок <b>YM</b> в начале скрипта.';
+}
+showSetup();
+
+function loginYandex() {
+  if (!YM.clientId) {
+    showSetup();
+    openMusic();
+    showHint('Для входа нужен client_id приложения Яндекса — инструкция в панели музыки.', 6000);
+    if (mSetup) mSetup.closest('.m-card').scrollIntoView({ block: 'center' });
+    noteActivity();
+    return;
+  }
+  var url = 'https://oauth.yandex.ru/authorize?response_type=token' +
+    '&client_id=' + encodeURIComponent(YM.clientId) +
+    '&redirect_uri=' + encodeURIComponent(YM.redirectUri) +
+    (YM.scope ? '&scope=' + encodeURIComponent(YM.scope) : '');
+  location.href = url;
+}
+
+document.getElementById('mLogin').addEventListener('click', loginYandex);
+document.getElementById('mLogout').addEventListener('click', function () {
+  musicSave({ token: null, user: null });
+  setLoggedOut();
+  showHint('Вы вышли из профиля. Музыка Яндекса продолжит работать в плеере.', 3600);
+});
+document.getElementById('mToMusic').addEventListener('click', function () {
+  window.open(music.user && music.user.login
+    ? 'https://music.yandex.ru/users/' + encodeURIComponent(music.user.login) + '/playlists'
+    : 'https://music.yandex.ru/', '_blank', 'noopener');
+});
+
+/* разбор ответа OAuth: токен приходит в hash */
+function readOAuthHash() {
+  if (!location.hash || location.hash.indexOf('access_token=') < 0) return false;
+  var params = new URLSearchParams(location.hash.replace(/^#/, ''));
+  var token = params.get('access_token');
+  if (!token) return false;
+  music.token = token;
+  musicSave({ token: token, user: null });
+  history.replaceState(null, '', location.pathname + location.search);
+  return true;
+}
+
+function loadProfile(token, silent) {
+  if (!token) { setLoggedOut(); return Promise.resolve(null); }
+  return fetch('https://login.yandex.ru/info?format=json', {
+    headers: { Authorization: 'OAuth ' + token }
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function (info) {
+    var user = {
+      id: info.id,
+      login: info.login,
+      name: info.display_name || info.real_name || info.login,
+      email: info.default_email || '',
+      avatar: info.is_avatar_empty || !info.default_avatar_id ? '' :
+        'https://avatars.yandex.net/get-yapic/' + info.default_avatar_id + '/islands-100'
+    };
+    music.token = token;
+    setLoggedIn(user);
+    musicSave({ token: token, user: user });
+    if (!silent) showHint('Профиль Яндекса подключён: ' + user.name + '.', 4200);
+    return user;
+  }).catch(function (err) {
+    musicSave({ token: null, user: null });
+    setLoggedOut();
+    if (!silent) showHint('Не удалось прочитать профиль Яндекса. Войдите заново.', 4600);
+    return null;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {});
+(function initMusicProfile() {
+  var hadHash = readOAuthHash();
+  var saved = musicStore();
+  if (hadHash) { loadProfile(music.token, false); openMusic(); }
+  else if (saved.token) { loadProfile(saved.token, true); }
+  else if (saved.user) { setLoggedIn(saved.user); }
+  else { setLoggedOut(); }
+})();
+
+/* ---------- 13.3 плеер ---------- */
+function ymNormalize(input) {
+  var v = (input || '').trim();
+  if (!v) return '';
+  var m = v.match(/<iframe[^>]+src=["']([^"']+)["']/i);
+  if (m) v = m[1];
+  if (!/^https?:/i.test(v)) return '';
+  var url;
+  try { url = new URL(v); } catch (e) { return ''; }
+  var host = url.hostname.replace(/^www\./, '');
+  if (!/^music\.yandex\.(ru|com|by|kz|uz|com\.tr)$/.test(host)) return '';
+  var path = url.pathname + url.hash;
+  if (url.pathname.indexOf('/iframe') === 0) return 'https://music.yandex.ru' + path;
+  var track = path.match(/\/(?:album\/(\d+)\/)?track\/(\d+)/);
+  if (track) {
+    return track[1]
+      ? 'https://music.yandex.ru/iframe/album/' + track[1] + '/track/' + track[2]
+      : 'https://music.yandex.ru/iframe/track/' + track[2];
+  }
+  var album = path.match(/\/album\/(\d+)/);
+  if (album) return 'https://music.yandex.ru/iframe/album/' + album[1];
+  var pl = path.match(/\/users\/([^/?#]+)\/playlists\/(\d+)/);
+  if (pl) return 'https://music.yandex.ru/iframe/playlist/' + pl[1] + '/' + pl[2];
+  var pl2 = path.match(/\/playlists\/([0-9a-zA-Z-]+)/);
+  if (pl2) return 'https://music.yandex.ru/iframe/playlists/' + pl2[1];
+  if (url.hash && url.hash.length > 3) return 'https://music.yandex.ru/iframe/' + url.hash;
+  return '';
+}
+
+function mountPlayer(src) {
+  if (!src) {
+    showHint('Не понял ссылку. Нужна страница или HTML-код плеера с music.yandex.ru.', 5200);
+    return;
+  }
+  var ifr = mPlayer.querySelector('iframe');
+  if (!ifr) {
+    ifr = document.createElement('iframe');
+    ifr.setAttribute('allow', 'autoplay; encrypted-media');
+    ifr.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    ifr.title = 'Плеер Яндекс Музыки';
+    mPlayer.appendChild(ifr);
+  }
+  ifr.src = src;
+  mEmpty.hidden = true;
+  music.src = src;
+  musicSave({ src: src });
+  mTab.classList.add('is-playing');
+  mNow.textContent = 'Играет официальный плеер Яндекс Музыки.';
+  noteActivity();
+}
+
+document.getElementById('mPlay').addEventListener('click', function () {
+  mountPlayer(ymNormalize(mUrl.value));
+});
+mUrl.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { e.preventDefault(); mountPlayer(ymNormalize(mUrl.value)); }
+});
+document.getElementById('mPause').addEventListener('click', function () {
+  var ifr = mPlayer.querySelector('iframe');
+  if (ifr) ifr.remove();
+  mEmpty.hidden = false;
+  music.src = '';
+  mTab.classList.remove('is-playing');
+  mNow.textContent = 'Ничего не играет.';
+  musicSave({ src: '' });
+  noteActivity();
+});
+Array.prototype.forEach.call(document.querySelectorAll('[data-ym-preset]'), function (b) {
+  b.addEventListener('click', function () {
+    mUrl.value = b.getAttribute('data-ym-preset');
+    mountPlayer(ymNormalize(mUrl.value));
+  });
+});
+
+(function restorePlayer() {
+  var saved = musicStore();
+  if (saved.src) {
+    mUrl.value = saved.src;
+    mountPlayer(saved.src);
+  }
+})();
+
+/* ---------- 13.4 клавиши ---------- */
+/* «M» уже обрабатывается в общем обработчике клавиатуры ниже */
 
 /* ============================================================
    12. СТАРТ
@@ -1040,7 +1638,9 @@ function boot() {
   view.el.style.visibility = 'visible';
   cur = view;
 
-  document.title = 'ver. 1.1.0 · coffeeIT — ' + start.name;
+  document.title = 'ver. 1.2.1 · coffeeIT — ' + start.name;
+  setTimeout(tellChromeHeight, 500);
+  window.addEventListener('load', function () { setTimeout(tellChromeHeight, 300); });
   lastActivity = Date.now();
   nextSkin = chooseNext();
   paintSwatches();
