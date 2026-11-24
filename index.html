@@ -2,8 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ver. 1.2.0 · coffeeIT — один сайт, восемь обликов</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark">
+<title>ver. 1.2.1 · coffeeIT — один сайт, восемь обликов</title>
 <meta name="description" content="coffeeIT — один сайт, который сам меняет облик: восемь дизайнов, плавные переходы через минуту бездействия.">
 <meta name="theme-color" content="#0c0c0e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230c0c0e'/%3E%3Cpath d='M14 18h16v10a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18Z' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3Cpath d='M30 21h3a3.5 3.5 0 0 1 0 7h-3' fill='none' stroke='%23f4efe4' stroke-width='2'/%3E%3C/svg%3E">
@@ -38,7 +43,8 @@ svg{display:block}
 ::selection{background:var(--accent);color:#0c0c0e}
 
 /* ---------- сцена ---------- */
-#stage{position:fixed;inset:0;background:#0c0c0e;isolation:isolate}
+#stage{position:fixed;inset:0;background:#0c0c0e;isolation:isolate;height:100%}
+@supports (height: 100dvh){#stage{height:100dvh}}
 .frame{position:absolute;inset:0;overflow:hidden;background:#0c0c0e;will-change:transform,opacity,clip-path}
 .frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
 .frame.is-preload{visibility:hidden;pointer-events:none;z-index:0}
@@ -172,10 +178,18 @@ svg{display:block}
 #musicTab.is-on .mt-dot{display:block}
 @media (max-width:860px){
   #music{width:min(360px,92vw);top:0;bottom:0;border-radius:0 16px 16px 0}
-  #musicTab{top:auto;bottom:calc(158px + env(safe-area-inset-bottom));transform:none;flex-direction:row;padding:9px 12px;border-radius:0 12px 12px 0}
-  #musicTab:hover{transform:translateX(2px)}
-  #musicTab .mt-label{writing-mode:horizontal-tb;transform:none}
+  /* на телефоне — компактный круглый ярлык по центру слева:
+     полоса обликов получает всю ширину и все восемь точек видны без скролла */
+  #musicTab{
+    top:50%;bottom:auto;transform:translateY(-50%);
+    flex-direction:column;gap:4px;padding:9px 7px;border-radius:0 14px 14px 0;
+    border-left:0;opacity:.94;
+  }
+  #musicTab:hover{transform:translateY(-50%)}
+  #musicTab .mt-ico{width:18px;height:18px}
+  #musicTab .mt-label{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:9.5px}
   #musicTab .mt-eq{height:12px}
+  #musicTab .mt-eq i{width:2px}
 }
 
 #music{
@@ -314,7 +328,7 @@ svg{display:block}
 @media (max-width:860px){
   :root{--chrome-h:52px}
   #chrome{padding:0 10px calc(10px + env(safe-area-inset-bottom));gap:8px;flex-direction:column;align-items:stretch}
-  #swatches{order:2;padding:6px;justify-content:flex-start;padding-left:100px}
+  #swatches{order:2;padding:6px;justify-content:flex-start}
   #pill{order:1;width:100%;max-width:none;gap:10px;padding:8px 10px 8px 8px}
   #pill .meta b{font-size:12.5px}
   #pill .meta span{font-size:11px}
@@ -329,7 +343,64 @@ svg{display:block}
   #pill .meta span{max-width:42vw}
 }
 
+/* iPhone SE (320–375), узкие Android */
+@media (max-width:380px){
+  #chrome{padding:0 8px calc(8px + env(safe-area-inset-bottom))}
+  #pill{gap:8px;padding:7px 9px 7px 7px}
+  #pill .meta b{font-size:12px}
+  #pill .meta span{font-size:10.5px;max-width:36vw}
+  .ring{width:38px;height:38px}
+  .ring .num{font-size:12px}
+  .sw{width:32px;height:32px;font-size:10.5px;border-radius:9px}
+  #swatches{padding:5px}
+  #panel{left:8px;right:8px;bottom:120px;max-height:52vh;border-radius:16px}
+  .p-head{padding:14px 14px 10px}
+  .p-set{padding:12px 14px 14px}
+  .seg{flex-wrap:wrap}
+  #music{width:100vw;border-radius:0}
+  .m-body{padding:4px 12px 14px}
+  .m-player iframe{height:152px}
+  #hint{font-size:11.5px;padding:10px 13px}
+}
+
+/* низкий ландшафт (телефон повёрнут) */
+@media (max-height:520px) and (orientation:landscape){
+  #chrome{padding:0 10px 8px}
+  #swatches{padding:5px;padding-left:auto}
+  #panel{bottom:104px;max-height:78vh}
+  #music{width:min(420px,60vw)}
+  #musicTab{padding:7px 6px}
+  .m-player iframe{height:140px}
+  #music .m-head p{display:none}
+}
+
+/* вырезы: панель и пульт не прячутся под «челкой» */
+@supports (padding: env(safe-area-inset-left)){
+  #chrome{padding-left:max(clamp(12px,2.2vw,26px), env(safe-area-inset-left));
+          padding-right:max(clamp(12px,2.2vw,26px), env(safe-area-inset-right))}
+  #musicTab{padding-left:max(9px, env(safe-area-inset-left))}
+}
+
 /* ---------- уважение к настройкам системы ---------- */
+/* ---------- телефоны: тач-таргеты и «залипающий» hover ---------- */
+@media (hover: none), (pointer: coarse){
+  /* на сенсоре hover срабатывает «навсегда» — убираем подъёмы и подсветку */
+  .sw:hover,.card:hover,.skin:hover,.m-btn:hover,.btn-ic:hover,.p-links a:hover{transform:none}
+  .sw:hover{transform:none}
+  .btn-ic{width:42px;height:42px}
+  .btn-ic svg{width:19px;height:19px}
+  .sw{width:36px;height:36px;border-radius:11px;font-size:11.5px}
+  .skin{padding:11px 10px}
+  .seg button{padding:9px 12px;font-size:12.5px}
+  .p-links a,.p-links button{padding:10px 13px;font-size:12px}
+  #pillNext{padding:2px 0}
+  .m-btn{padding:12px 15px;font-size:13px}
+  .m-quick button{padding:11px 12px;font-size:12.5px}
+  .m-input{padding:12px 12px;font-size:16px}   /* 16px: iOS не зумит при фокусе */
+  .m-head p,.m-note{font-size:12px}
+  #musicTab{padding:16px 12px}
+}
+
 @media (prefers-reduced-motion: reduce){
   #veil{display:none}
   #splash svg,#splash .s-bar i{animation:none}
@@ -776,6 +847,10 @@ window.addEventListener('message', function (e) {
       view._resolve();
     }
   }
+  if (d.type === 'size' && d.vh) {
+    /* запоминаем высоту вьюпорта облика — от неё считаем отступ пульта */
+    view.meta.vh = d.vh;
+  }
   if (view !== cur) return;               // скрытый/предзагруженный облик не влияет на таймер
   live.hash = view.meta.hash;
   live.y = view.meta.y;
@@ -1154,7 +1229,7 @@ async function switchTo(skin, opts) {
   cur = inc;
   settings.skin = skin.id;
   saveStore();
-  document.title = 'ver. 1.2.0 · coffeeIT — ' + skin.name;
+  document.title = 'ver. 1.2.1 · coffeeIT — ' + skin.name;
 
   nextSkin = chooseNext();
   busy = false;
@@ -1162,6 +1237,7 @@ async function switchTo(skin, opts) {
   paintSwatches();
   paintSettings();
   paintPill();
+  setTimeout(tellChromeHeight, 120);
   preloadNext();
 
   if (opts.hint) showHint(opts.hint, 5200);
@@ -1188,6 +1264,16 @@ function userPick(id) {
   if (cur && cur.skin.id === id) return;
   switchTo(skin, { hint: 'Облик закреплён: №' + skin.num + ' «' + skin.name + '».' });
 }
+
+/* сообщаем текущему облику, сколько места занимает нижний пульт,
+   чтобы корзина, меню и тосты не прятались под ним на телефоне */
+function tellChromeHeight() {
+  if (!cur) return;
+  var h = Math.round(chrome.getBoundingClientRect().height || 0);
+  post(cur, { __ciShell: 1, chrome: h, vh: window.innerHeight });
+}
+window.addEventListener('resize', function () { setTimeout(tellChromeHeight, 160); });
+window.addEventListener('orientationchange', function () { setTimeout(tellChromeHeight, 260); });
 
 /* ============================================================
    10. ЦИКЛ
@@ -1552,7 +1638,9 @@ function boot() {
   view.el.style.visibility = 'visible';
   cur = view;
 
-  document.title = 'ver. 1.2.0 · coffeeIT — ' + start.name;
+  document.title = 'ver. 1.2.1 · coffeeIT — ' + start.name;
+  setTimeout(tellChromeHeight, 500);
+  window.addEventListener('load', function () { setTimeout(tellChromeHeight, 300); });
   lastActivity = Date.now();
   nextSkin = chooseNext();
   paintSwatches();
